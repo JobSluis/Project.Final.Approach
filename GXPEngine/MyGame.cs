@@ -17,10 +17,10 @@ namespace GXPEngine
 			AddChild(player2);
 			Chain chain = new Chain(player, player2);
 			AddChild(chain);
-			for (int i = 0; i < 10;i++)
+			for (int i = 0; i < 50;i++)
 			{
 				Sprite groundBlock = new Sprite("square.png");
-				groundBlock.SetXY(i*65,height/2);
+				groundBlock.SetXY(i*64,height/2);
 				AddChild(groundBlock);
 				Console.WriteLine(groundBlock.y);
 			}

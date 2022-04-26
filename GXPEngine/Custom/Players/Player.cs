@@ -1,3 +1,4 @@
+using System;
 using System.Drawing.Drawing2D;
 using GXPEngine.Core;
 
@@ -9,8 +10,9 @@ namespace GXPEngine.Custom
         public Vector2 velocity;
         private Vector2 direction;
         private const float BRAKINGFORCE = 0.1f;
-        private const float JUMPFORCE = 1f;
+        private const float JUMPFORCE = 10f;
         private const float ACCELERATION = 0.3f;
+        private const float GRAVITY = 0.5f;
         private int player;
 
         public Player(int x, int y, int player) : base("circle.png")
@@ -21,7 +23,7 @@ namespace GXPEngine.Custom
             SetOrigin(width/2,height/2);
         }
 
-        protected void Update()
+        void Update()
         {
             Controls();
             position += velocity;
@@ -34,14 +36,14 @@ namespace GXPEngine.Custom
             {
                     case 1 :
 
-                        if (Input.GetKey(Key.W))
+                        if (Input.GetKeyDown(Key.W))
                         {
-                            velocity += new Vector2(0, -1f) * ACCELERATION;
+                            velocity += new Vector2(0, -1f) * JUMPFORCE;
                         }
-                        if (Input.GetKey(Key.S))
-                        { 
-                            velocity += new Vector2(0, 1f) * ACCELERATION;
-                        }
+                        // if (Input.GetKey(Key.S))
+                        // { 
+                        //     velocity += new Vector2(0, 1f) * ACCELERATION;
+                        // }
 
                         if (Input.GetKey(Key.D))
                         {
@@ -58,12 +60,12 @@ namespace GXPEngine.Custom
 
                         if (Input.GetKey(Key.UP))
                         {
-                            velocity += new Vector2(0, -1f) * ACCELERATION;
+                            velocity += new Vector2(0, -1f) * JUMPFORCE;
                         }
-                        if (Input.GetKey(Key.DOWN))
-                        {
-                            velocity += new Vector2(0, 1f) * ACCELERATION; 
-                        }
+                        // if (Input.GetKey(Key.DOWN))
+                        // {
+                        //     velocity += new Vector2(0, 1f) * ACCELERATION; 
+                        // }
 
                         if (Input.GetKey(Key.RIGHT))
                         {
@@ -88,16 +90,26 @@ namespace GXPEngine.Custom
             }
             
             //these last 2 can be removed later, when we add jumping/gravity
-            if (velocity.y > 0) 
-            {
-                velocity.y -= BRAKINGFORCE;
-            }
+            // if (velocity.y > 0) 
+            // {
+            //     velocity.y -= BRAKINGFORCE;
+            // }
 
-            if (velocity.y < 0)
+            // if (velocity.y <= 0)
+            // {
+            //     velocity.y += GRAVITY;
+            // }
+
+            velocity.y += GRAVITY;
+            GameObject[] overlaps = GetCollisions (false,true);
+            Console.WriteLine(overlaps);
+            foreach (GameObject c in overlaps)
             {
-                velocity.y += BRAKINGFORCE;
+                if (c is Sprite)
+                {
+                    velocity.y = 0;
+                }
             }
-            
         }
 
         private void UpdateScreenPosition()
