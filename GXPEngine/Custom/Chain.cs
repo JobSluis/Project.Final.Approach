@@ -36,14 +36,7 @@ namespace GXPEngine.Custom
 
         private void ColorCheck()
         {
-            if (chainLength > MAX_CHAIN_LENGTH - MAX_CHAIN_LENGTH / 4.5f)
-            {
-                lineColor = 0xffff0000;
-            }
-            else
-            {
-                lineColor = 0xffffffff;
-            }
+            lineColor = chainLength > MAX_CHAIN_LENGTH - MAX_CHAIN_LENGTH / 4.5f ? 0xffff0000 : 0xffffffff;
         }
     }
 }
