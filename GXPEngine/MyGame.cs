@@ -5,7 +5,7 @@ using GXPEngine.Custom; // System.Drawing contains drawing tools such as Color d
 
 public class MyGame : Game
 {
-	public MyGame() : base(800, 600, false)		// Create a window that's 800x600 and NOT fullscreen
+	public MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 	{
 		Player player = new Player(100, 100,1);
 		AddChild(player);

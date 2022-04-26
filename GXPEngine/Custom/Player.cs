@@ -10,6 +10,7 @@ namespace GXPEngine.Custom
         private Vector2 direction;
         private const float BRAKINGFORCE = 0.1f;
         private const float JUMPFORCE = 1f;
+        private const float ACCELERATION = 0.3f;
         private int player;
 
         public Player(int x, int y, int player) : base("circle.png")
@@ -35,27 +36,21 @@ namespace GXPEngine.Custom
 
                     if (Input.GetKey(Key.W))
                     {
-                        velocity.y += JUMPFORCE;
+                        velocity += new Vector2(0, -1f) * ACCELERATION;
+                    }
+                    if (Input.GetKey(Key.S))
+                    {
+                        velocity += new Vector2(0, 1f) * ACCELERATION;
                     }
 
                     if (Input.GetKey(Key.D))
                     {
-                        velocity += new Vector2(1f, 0);
+                        velocity += new Vector2(1f, 0) * ACCELERATION;
                     }
 
                     if (Input.GetKey(Key.A))
                     {
-                        velocity += new Vector2(-1f, 0);
-                    }
-
-                    if (velocity.x > 0)
-                    {
-                        velocity.x -= BRAKINGFORCE;
-                    }
-
-                    if (velocity.x < 0)
-                    {
-                        velocity.x += BRAKINGFORCE;
+                        velocity += new Vector2(-1f, 0) * ACCELERATION;
                     }
 
                     break;
@@ -75,19 +70,28 @@ namespace GXPEngine.Custom
                     {
                         velocity += new Vector2(-1f, 0);
                     }
-
-                    if (velocity.x > 0)
-                    {
-                        velocity.x -= BRAKINGFORCE;
-                    }
-
-                    if (velocity.x < 0)
-                    {
-                        velocity.x += BRAKINGFORCE;
-                    }
+                    
                     
                     break;
                     
+            }
+            if (velocity.x > 0)
+            {
+                velocity.x -= BRAKINGFORCE;
+            }
+
+            if (velocity.x < 0)
+            {
+                velocity.x += BRAKINGFORCE;
+            }
+            if (velocity.y > 0)
+            {
+                velocity.y -= BRAKINGFORCE;
+            }
+
+            if (velocity.y < 0)
+            {
+                velocity.y += BRAKINGFORCE;
             }
             
         }

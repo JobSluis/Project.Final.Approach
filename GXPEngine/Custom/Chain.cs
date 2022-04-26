@@ -1,3 +1,7 @@
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using GXPEngine.Core;
+
 namespace GXPEngine.Custom
 {
     public class Chain : GameObject
@@ -5,6 +9,8 @@ namespace GXPEngine.Custom
         private Player player1;
         private Player player2;
         private const float MAX_CHAIN_LENGTH = 500;
+        private float chainLength;
+        private uint lineColor;
 
         public Chain(Player player1, Player player2)
         {
@@ -14,15 +20,30 @@ namespace GXPEngine.Custom
 
         private void Update()
         {
-            Gizmos.DrawLine(player1.position.x, player1.position.y,player2.position.x,player2.position.y);
+            chainLength = (player1.position - player2.position).Length();
+            ColorCheck();
+            Gizmos.DrawLine(player1.position.x, player1.position.y,player2.position.x,player2.position.y,null,lineColor);
             LengthCheck();
         }
 
         private void LengthCheck()
         {
-            float chainLength = (player1.position - player2.position).Length();
+            Vector2 positionDelta = player1.position - player2.position;
+            
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player1.velocity = player2.velocity;
+            player2.velocity = positionDelta.Normalized() * 5f;
+        }
+
+        private void ColorCheck()
+        {
+            if (chainLength > MAX_CHAIN_LENGTH - MAX_CHAIN_LENGTH / 4.5f)
+            {
+                lineColor = 0xffff0000;
+            }
+            else
+            {
+                lineColor = 0xffffffff;
+            }
         }
     }
 }
