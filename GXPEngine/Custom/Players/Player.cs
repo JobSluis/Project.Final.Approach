@@ -30,12 +30,10 @@ namespace GXPEngine.Custom
 
         void Update()
         {
-            Controls();
-            position += velocity;
-            UpdateScreenPosition();
+            
         }
 
-        private void Controls()
+        protected void Controls()
         {
             switch (player)
             {
@@ -111,7 +109,7 @@ namespace GXPEngine.Custom
             velocity.y -= JUMPSTRENGTH;
         }
 
-        private void UpdateScreenPosition()
+        protected void UpdateScreenPosition()
         {
             x = position.x;
             y = position.y;
