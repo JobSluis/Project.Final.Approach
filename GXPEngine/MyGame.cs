@@ -9,7 +9,7 @@ namespace GXPEngine
 {
 	public class MyGame : Game
 	{
-		public MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
+		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			Player player = new Player(100, 100,1);
 			AddChild(player);
@@ -20,7 +20,7 @@ namespace GXPEngine
 			for (int i = 0; i < 50;i++)
 			{
 				Sprite groundBlock = new Sprite("square.png");
-				groundBlock.SetXY(i*64,height/2);
+				groundBlock.SetXY(i*63,height/2);
 				AddChild(groundBlock);
 				Console.WriteLine(groundBlock.y);
 			}
