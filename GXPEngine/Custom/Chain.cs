@@ -6,11 +6,13 @@ namespace GXPEngine.Custom
 {
     public class Chain : GameObject
     {
-        private Player player1;
-        private Player player2;
-        private const float MAX_CHAIN_LENGTH = 500;
+        private readonly Player player1;
+        private readonly Player player2;
+        private const float MAX_CHAIN_LENGTH = 250;
+        private const float CHAINSTRENGTH = 5f;
         private float chainLength;
         private uint lineColor;
+        
 
         public Chain(Player player1, Player player2)
         {
@@ -31,12 +33,12 @@ namespace GXPEngine.Custom
             Vector2 positionDelta = player1.position - player2.position;
             
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player2.velocity = positionDelta.Normalized() * 5f;
+            player2.velocity = positionDelta.Normalized() * CHAINSTRENGTH;
         }
 
         private void ColorCheck()
         {
-            lineColor = chainLength > MAX_CHAIN_LENGTH - MAX_CHAIN_LENGTH / 4.5f ? 0xffff0000 : 0xffffffff;
+            lineColor = chainLength > MAX_CHAIN_LENGTH ? 0xffff0000 : 0xffffffff;
         }
     }
 }

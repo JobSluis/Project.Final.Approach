@@ -8,12 +8,17 @@ namespace GXPEngine.Custom
     {
         public Vector2 position;
         public Vector2 velocity;
-        private Vector2 direction;
         private const float BRAKINGFORCE = 0.1f;
         private const float JUMPFORCE = 10f;
-        private const float ACCELERATION = 0.3f;
-        private const float GRAVITY = 0.5f;
+        private const float ACCELERATION = 0.4f;
+        private const float GRAVITY = 0.4f;
         private int player;
+        
+        //jump variables
+        private const int JUMPINTERVAL = 1000;
+        private const float JUMPSTRENGTH = 5f;
+        private int lastJumpTime;
+        private bool isGrounded = false;
 
         public Player(int x, int y, int player) : base("circle.png")
         {
@@ -25,25 +30,20 @@ namespace GXPEngine.Custom
 
         void Update()
         {
-            Controls();
-            position += velocity;
-            UpdateScreenPosition();
+            
         }
 
-        private void Controls()
+        protected void Controls()
         {
             switch (player)
             {
                     case 1 :
 
-                        if (Input.GetKeyDown(Key.W))
+                        if (Input.GetKeyDown(Key.W) && Time.time > lastJumpTime)
                         {
-                            velocity += new Vector2(0, -1f) * JUMPFORCE;
+                            Jump();
+                            lastJumpTime = Time.time + JUMPINTERVAL;
                         }
-                        // if (Input.GetKey(Key.S))
-                        // { 
-                        //     velocity += new Vector2(0, 1f) * ACCELERATION;
-                        // }
 
                         if (Input.GetKey(Key.D))
                         {
@@ -56,16 +56,13 @@ namespace GXPEngine.Custom
                         }
 
                         break;
+                    
                     case 2 :
 
                         if (Input.GetKey(Key.UP))
                         {
-                            velocity += new Vector2(0, -1f) * JUMPFORCE;
+                            Jump();
                         }
-                        // if (Input.GetKey(Key.DOWN))
-                        // {
-                        //     velocity += new Vector2(0, 1f) * ACCELERATION; 
-                        // }
 
                         if (Input.GetKey(Key.RIGHT))
                         {
@@ -76,43 +73,43 @@ namespace GXPEngine.Custom
                         {
                             velocity += new Vector2(-1f, 0);
                         }
+                        
                         break;
-                    
             }
+            
             if (velocity.x > 0)
             {
+                if (velocity.x < BRAKINGFORCE)
+                {
+                    velocity.x = 0;
+                }
                 velocity.x -= BRAKINGFORCE;
             }
 
             if (velocity.x < 0)
             {
+                if (velocity.x > BRAKINGFORCE)
+                {
+                    velocity.x = 0;
+                }
                 velocity.x += BRAKINGFORCE;
             }
             
-            //these last 2 can be removed later, when we add jumping/gravity
-            // if (velocity.y > 0) 
-            // {
-            //     velocity.y -= BRAKINGFORCE;
-            // }
 
-            // if (velocity.y <= 0)
-            // {
-            //     velocity.y += GRAVITY;
-            // }
-
-            velocity.y += GRAVITY;
-            GameObject[] overlaps = GetCollisions (false,true);
-            Console.WriteLine(overlaps);
-            foreach (GameObject c in overlaps)
+            if (velocity.y < 0)
             {
-                if (c is Sprite)
-                {
-                    velocity.y = 0;
-                }
+                velocity.y += GRAVITY;
             }
+            
         }
 
-        private void UpdateScreenPosition()
+        private void Jump()
+        {
+            isGrounded = false;
+            velocity.y -= JUMPSTRENGTH;
+        }
+
+        protected void UpdateScreenPosition()
         {
             x = position.x;
             y = position.y;
