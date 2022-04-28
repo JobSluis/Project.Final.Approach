@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Custom\Block.cs" />
     <Compile Include="Custom\Chain.cs" />
     <Compile Include="Custom\Collisions\Ball.cs" />
+    <Compile Include="Custom\Collisions\Block.cs" />
     <Compile Include="Custom\Collisions\CollisionInfo.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
     <Compile Include="Custom\Players\BigPlayer.cs" />

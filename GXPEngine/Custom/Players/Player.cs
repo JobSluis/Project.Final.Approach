@@ -12,14 +12,14 @@ namespace GXPEngine.Custom
         public Vector2 velocity;
         private float radius;
         private const float BRAKINGFORCE = 0.1f;
-        private const float JUMPFORCE = 10f;
+        private const float JUMPFORCE = 2500f;
         private const float ACCELERATION = 0.4f;
         private const float GRAVITY = 0.4f;
         private int playertype;
         
         //jump variables
         private const int JUMPINTERVAL = 1000;
-        private const float JUMPSTRENGTH = 5f;
+        private const float JUMPSTRENGTH = 15f;
         private int lastJumpTime;
         private bool isGrounded = false;
         
@@ -27,7 +27,7 @@ namespace GXPEngine.Custom
         private Vector2 oldPosition;
         private CollisionInfo firstCollision;
         private bool vertImpact;
-        private float bounciness = 0.98f;
+        private float bounciness = 0.60f;
         private int maxDistance = 250;
         
 
@@ -51,6 +51,11 @@ namespace GXPEngine.Custom
             if (firstCollision != null)
             {
                 ResolveCollision(firstCollision);
+                isGrounded = true;
+            }
+            else
+            {
+	            isGrounded = false;
             }
             UpdateScreenPosition();
         }
@@ -123,7 +128,10 @@ namespace GXPEngine.Custom
                 velocity.y += GRAVITY;
             }
 
-            velocity.y += GRAVITY;
+            if (!isGrounded)
+            {
+	            velocity.y += GRAVITY;
+            }
         }
 
         private void Jump()
@@ -135,7 +143,7 @@ namespace GXPEngine.Custom
         private CollisionInfo FindEarliestCollision()
         {
             MyGame myGame = (MyGame)game;
-		CollisionInfo lowestToi = null;
+			CollisionInfo lowestToi = null;
 
 		foreach (Block t in myGame.blocks)  //caps collision
 		{
@@ -219,6 +227,7 @@ namespace GXPEngine.Custom
 		        Vector2 poi = oldPosition + velocity * col.timeOfImpact;
 		        position = poi;
 		        velocity.Reflect(1,col.normal);
+		        velocity *= bounciness;
         }
 
 
