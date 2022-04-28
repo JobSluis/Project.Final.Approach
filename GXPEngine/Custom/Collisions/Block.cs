@@ -78,7 +78,6 @@ namespace GXPEngine.Custom
             {
                 Game.main.AddChild(c);
             }
-
             Console.WriteLine("line added");
         }
     }
