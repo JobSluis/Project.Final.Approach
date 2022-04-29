@@ -15,7 +15,8 @@ namespace GXPEngine
 	public class MyGame : Game
 	{
 		public readonly List<Block> blocks;
-		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
+		private int health = 4;
+		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			SmallPlayer player = new SmallPlayer(100, 100,1);
 			AddChild(player);
@@ -33,6 +34,7 @@ namespace GXPEngine
 				blocks.Add(groundBlock);
 				Console.WriteLine(groundBlock.y);
 			}
+			
 			Console.WriteLine("MyGame initialized");
 		}
 
@@ -41,17 +43,17 @@ namespace GXPEngine
 			
 		}
 		
-		// public int GetNumberOfBlocks()
-		// {
-		// 	return blocks.Count;
-		// }
-		//
-		// public Block GetBlocks(int index) {
-		// 	if (index >= 0 && index < blocks.Count) {
-		// 		return blocks [index];
-		// 	}
-		// 	return null;
-		// }
+		public int GetNumberOfBlocks()
+		{
+			return blocks.Count;
+		}
+		
+		public Block GetBlocks(int index) {
+			if (index >= 0 && index < blocks.Count) {
+				return blocks [index];
+			}
+			return null;
+		}
 
 		static void Main()							// Main() is the first method that's called when the program is run
 		{

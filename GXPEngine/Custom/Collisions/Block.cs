@@ -63,11 +63,11 @@ namespace GXPEngine.Custom
         }
 
         private void AddLine (Vector2 start, Vector2 end) {
-            LineSegment line = new LineSegment(start, end,this , 0xff00ff00, 3);
+            LineSegment line = new (start, end,this , 0xff00ff00, 3);
             lines.Add (line);
-            LineSegment lineOpp = new LineSegment(end, start,this,  0xff00ff00, 3);
+            LineSegment lineOpp = new (end, start,this,  0xff00ff00, 3);
             lines.Add (lineOpp);
-            Ball endcap = new Ball(end + position, 0,this);
+            Ball endcap = new (end + position, 0,this);
             caps.Add(endcap);
             foreach (LineSegment l in lines)
             {
@@ -78,7 +78,6 @@ namespace GXPEngine.Custom
             {
                 Game.main.AddChild(c);
             }
-            Console.WriteLine("line added");
         }
     }
 }
