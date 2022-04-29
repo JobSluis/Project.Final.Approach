@@ -1,6 +1,8 @@
 using System;
 using System.Drawing.Drawing2D;
+using GXPEngine.Components;
 using GXPEngine.Core;
+using GXPEngine.Custom.Collisions;
 
 namespace GXPEngine.Custom
 {
@@ -8,34 +10,59 @@ namespace GXPEngine.Custom
     {
         public Vector2 position;
         public Vector2 velocity;
+        private float radius;
         private const float BRAKINGFORCE = 0.1f;
-        private const float JUMPFORCE = 10f;
+        private const float JUMPFORCE = 2500f;
         private const float ACCELERATION = 0.4f;
         private const float GRAVITY = 0.4f;
-        private int player;
+        private int playertype;
         
         //jump variables
         private const int JUMPINTERVAL = 1000;
-        private const float JUMPSTRENGTH = 5f;
+        private const float JUMPSTRENGTH = 15f;
         private int lastJumpTime;
         private bool isGrounded = false;
+        
+        //collision variables
+        private Vector2 oldPosition;
+        private CollisionInfo firstCollision;
+        private bool vertImpact;
+        private float bounciness = 0.60f;
+        private int maxDistance = 250;
+        
 
         public Player(int x, int y, int player) : base("circle.png")
         {
             position = new Vector2(x, y);
             SetXY(x, y);
-            this.player = player;
+            this.playertype = player;
             SetOrigin(width/2,height/2);
+            radius = height / 2;
+        }
+        
+        protected void Update()
+        {
+            oldPosition = position;
+            Controls();
+            position += velocity;
+            firstCollision = FindEarliestCollision();
+            Console.WriteLine(firstCollision);
+
+            if (firstCollision != null)
+            {
+                ResolveCollision(firstCollision);
+                isGrounded = true;
+            }
+            else
+            {
+	            isGrounded = false;
+            }
+            UpdateScreenPosition();
         }
 
-        void Update()
+        private void Controls()
         {
-            
-        }
-
-        protected void Controls()
-        {
-            switch (player)
+            switch (playertype)
             {
                     case 1 :
 
@@ -100,7 +127,11 @@ namespace GXPEngine.Custom
             {
                 velocity.y += GRAVITY;
             }
-            
+
+            if (!isGrounded)
+            {
+	            velocity.y += GRAVITY;
+            }
         }
 
         private void Jump()
@@ -109,7 +140,98 @@ namespace GXPEngine.Custom
             velocity.y -= JUMPSTRENGTH;
         }
 
-        protected void UpdateScreenPosition()
+        private CollisionInfo FindEarliestCollision()
+        {
+            MyGame myGame = (MyGame)game;
+			CollisionInfo lowestToi = null;
+
+		foreach (Block t in myGame.blocks)  //caps collision
+		{
+			for (int i = 0; i < t.GetNumberOfCaps(); i++)
+			{
+				Ball mover = t.GetCaps(i);
+				// if (mover == this) continue;
+				//special check for performance reasons, seeing how far they are away from the ball before calculating
+				if(mover.position.x < position.x - maxDistance || mover.position.y < position.y - maxDistance ||
+				   mover.position.x > position.x + maxDistance || mover.position.y > position.y + maxDistance) continue;
+					
+				CollisionInfo ballcheck = Ballcheck(mover);
+				if (ballcheck == null) continue;
+				if (lowestToi == null || lowestToi.timeOfImpact > ballcheck.timeOfImpact)
+				{
+					lowestToi = ballcheck;
+				}
+				
+			}
+
+			for (int i = 0; i < t.GetNumberOfLines(); i++) //line collisions
+			{
+				LineSegment l = t.GetLine(i);
+				Block g = (Block) l.owner;
+				//special check for performance reasons, seeing how far they are away from the ball before calculating
+				if (g.position.x < position.x - maxDistance || g.position.x > position.x + maxDistance ||		
+				    g.position.y < position.y - maxDistance || g.position.y > position.y + maxDistance) continue;
+				Vector2 diffVec = position - l.end;
+				Vector2 lineVec = l.end - l.start;
+				float ballDistance = lineVec.Normal().Dot(diffVec);
+				if (!(ballDistance < radius)) continue;
+				Vector2 oldDiffVec = oldPosition - l.end;
+				float a = lineVec.Normal().Dot(oldDiffVec) - radius;
+				float b = -lineVec.Normal().Dot(velocity);
+				if (!(a >= 0) || !(b > 0)) continue;
+				float toi = a / b;
+				Vector2 poi = oldPosition + velocity * toi;
+				Vector2 diffVec2 = l.end - poi;
+				Vector2 unitVec = lineVec.Normalized();
+				float distance = diffVec2.Dot(unitVec);
+				if (!(toi <= 1)) continue;
+				if (!(distance >= 0) || !(distance < lineVec.Length())) continue;
+				CollisionInfo lineCheck = new CollisionInfo(lineVec.Normal(), l, toi);
+				if (lowestToi == null || lowestToi.timeOfImpact > lineCheck.timeOfImpact)
+				{
+					lowestToi = lineCheck;
+				}
+			}
+		}
+		return lowestToi;
+		
+        }
+        
+        private CollisionInfo Ballcheck(Ball mover)
+        {
+	        Vector2 correctNormal = oldPosition - mover.position;
+	        float a = Mathf.Pow(velocity.Length(),2);
+	        if (a == 0) return null;
+	        float b = (2 * correctNormal).Dot(velocity);
+	        float c = Mathf.Pow(correctNormal.Length(),2) - Mathf.Pow(radius + mover.radius,2);
+	        float d = Mathf.Pow(b, 2) - (4 * a * c);
+	        float toi;
+	        if (d < 0) return null;
+	        if (c < 0)
+	        {
+		        if (b < 0 || (a > -radius && a < 0))
+		        {
+			        toi = 0;
+		        }
+		        else return null;
+	        }
+	        else
+	        {
+		        toi = (-b - Mathf.Sqrt(d))/ (2 * a);
+	        }
+
+
+	        return toi is < 0 or > 1 ? null : new CollisionInfo(correctNormal.Normalized(), mover, toi);
+        }
+        private void ResolveCollision(CollisionInfo col) {
+		        Vector2 poi = oldPosition + velocity * col.timeOfImpact;
+		        position = poi;
+		        velocity.Reflect(1,col.normal);
+		        velocity *= bounciness;
+        }
+
+
+        private void UpdateScreenPosition()
         {
             x = position.x;
             y = position.y;

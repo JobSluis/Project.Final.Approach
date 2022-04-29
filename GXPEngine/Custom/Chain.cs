@@ -33,7 +33,7 @@ namespace GXPEngine.Custom
             Vector2 positionDelta = player1.position - player2.position;
             
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player2.velocity = positionDelta.Normalized() * CHAINSTRENGTH;
+            player2.velocity = positionDelta.Normalized() * (CHAINSTRENGTH + CHAINSTRENGTH * MAX_CHAIN_LENGTH/550);
         }
 
         private void ColorCheck()

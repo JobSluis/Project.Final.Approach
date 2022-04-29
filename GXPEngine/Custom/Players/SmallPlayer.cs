@@ -9,9 +9,7 @@ namespace GXPEngine.Custom
         
         void Update()
         {
-            Controls();
-            position += velocity;
-            UpdateScreenPosition();
+            base.Update();
         }
     }
 }
