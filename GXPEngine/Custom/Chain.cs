@@ -8,8 +8,9 @@ namespace GXPEngine.Custom
     {
         private readonly Player player1;
         private readonly Player player2;
-        private const float MAX_CHAIN_LENGTH = 250;
-        private const float CHAINSTRENGTH = 5f;
+        private const float MAX_CHAIN_LENGTH = 350;
+        private const float ULTIMATE_MAX_CHAIN_LENGTH = 500;
+        private const float CHAINSTRENGTH = 7f;
         private float chainLength;
         private uint lineColor;
         
@@ -33,7 +34,12 @@ namespace GXPEngine.Custom
             Vector2 positionDelta = player1.position - player2.position;
             
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player2.velocity = positionDelta.Normalized() * (CHAINSTRENGTH + CHAINSTRENGTH * MAX_CHAIN_LENGTH/550);
+            player2.velocity += positionDelta.Normalized() * CHAINSTRENGTH;
+            // if (chainLength > ULTIMATE_MAX_CHAIN_LENGTH)
+            // {
+            //     player1.velocity += positionDelta.Normalized() * CHAINSTRENGTH;
+            // }
+            
         }
 
         private void ColorCheck()

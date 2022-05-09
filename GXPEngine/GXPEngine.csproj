@@ -46,6 +46,7 @@
     <Compile Include="Custom\Collisions\Block.cs" />
     <Compile Include="Custom\Collisions\CollisionInfo.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
+    <Compile Include="Custom\Collisions\Spike.cs" />
     <Compile Include="Custom\Players\BigPlayer.cs" />
     <Compile Include="Custom\Players\Player.cs" />
     <Compile Include="Custom\Players\SmallPlayer.cs" />

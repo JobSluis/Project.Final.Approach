@@ -1,5 +1,6 @@
 using System;
 using System.Drawing.Drawing2D;
+using System.Security.AccessControl;
 using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom.Collisions;
@@ -10,32 +11,30 @@ namespace GXPEngine.Custom
     {
         public Vector2 position;
         public Vector2 velocity;
-        private float radius;
+        private readonly float radius;
         private const float BRAKINGFORCE = 0.1f;
-        private const float JUMPFORCE = 2500f;
-        private const float ACCELERATION = 0.4f;
+        private const float ACCELERATION = 1f;
         private const float GRAVITY = 0.4f;
-        private int playertype;
-        
+        private readonly int playertype;
+
         //jump variables
         private const int JUMPINTERVAL = 1000;
         private const float JUMPSTRENGTH = 15f;
         private int lastJumpTime;
-        private bool isGrounded = false;
+        private bool isGrounded;
         
         //collision variables
         private Vector2 oldPosition;
         private CollisionInfo firstCollision;
-        private bool vertImpact;
-        private float bounciness = 0.60f;
-        private int maxDistance = 250;
-        
+        private const float BOUNCINESS = 0f;
+        private const int MAX_DISTANCE = 250;
 
-        public Player(int x, int y, int player) : base("circle.png")
+
+        protected Player(int x, int y, int player) : base("circle.png")
         {
             position = new Vector2(x, y);
             SetXY(x, y);
-            this.playertype = player;
+            playertype = player;
             SetOrigin(width/2,height/2);
             radius = height / 2;
         }
@@ -46,22 +45,22 @@ namespace GXPEngine.Custom
             Controls();
             position += velocity;
             firstCollision = FindEarliestCollision();
-            Console.WriteLine(firstCollision);
 
             if (firstCollision != null)
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
             }
-            else
-            {
-	            isGrounded = false;
-            }
+            // else
+            // {
+            //   isGrounded = false;
+            // }
             UpdateScreenPosition();
         }
 
         private void Controls()
         {
+	        
             switch (playertype)
             {
                     case 1 :
@@ -86,19 +85,20 @@ namespace GXPEngine.Custom
                     
                     case 2 :
 
-                        if (Input.GetKey(Key.UP))
+                        if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
                         {
                             Jump();
+                            lastJumpTime = Time.time + JUMPINTERVAL;
                         }
 
                         if (Input.GetKey(Key.RIGHT))
                         {
-                            velocity += new Vector2(1f, 0);
+                            velocity += new Vector2(1f, 0) * ACCELERATION;
                         }
 
                         if (Input.GetKey(Key.LEFT))
                         {
-                            velocity += new Vector2(-1f, 0);
+                            velocity += new Vector2(-1f, 0) * ACCELERATION;
                         }
                         
                         break;
@@ -152,8 +152,8 @@ namespace GXPEngine.Custom
 				Ball mover = t.GetCaps(i);
 				// if (mover == this) continue;
 				//special check for performance reasons, seeing how far they are away from the ball before calculating
-				if(mover.position.x < position.x - maxDistance || mover.position.y < position.y - maxDistance ||
-				   mover.position.x > position.x + maxDistance || mover.position.y > position.y + maxDistance) continue;
+				if(mover.position.x < position.x - MAX_DISTANCE || mover.position.y < position.y - MAX_DISTANCE ||
+				   mover.position.x > position.x + MAX_DISTANCE || mover.position.y > position.y + MAX_DISTANCE) continue;
 					
 				CollisionInfo ballcheck = Ballcheck(mover);
 				if (ballcheck == null) continue;
@@ -169,8 +169,8 @@ namespace GXPEngine.Custom
 				LineSegment l = t.GetLine(i);
 				Block g = (Block) l.owner;
 				//special check for performance reasons, seeing how far they are away from the ball before calculating
-				if (g.position.x < position.x - maxDistance || g.position.x > position.x + maxDistance ||		
-				    g.position.y < position.y - maxDistance || g.position.y > position.y + maxDistance) continue;
+				if (g.position.x < position.x - MAX_DISTANCE || g.position.x > position.x + MAX_DISTANCE ||		
+				    g.position.y < position.y - MAX_DISTANCE || g.position.y > position.y + MAX_DISTANCE) continue;
 				Vector2 diffVec = position - l.end;
 				Vector2 lineVec = l.end - l.start;
 				float ballDistance = lineVec.Normal().Dot(diffVec);
@@ -227,7 +227,14 @@ namespace GXPEngine.Custom
 		        Vector2 poi = oldPosition + velocity * col.timeOfImpact;
 		        position = poi;
 		        velocity.Reflect(1,col.normal);
-		        velocity *= bounciness;
+		        velocity *= BOUNCINESS;
+		        MyGame myGame = (MyGame)game;
+
+		        if (col.other.parent is Spike)
+		        {
+			        myGame.health--;
+		        }
+		        
         }
 
 
