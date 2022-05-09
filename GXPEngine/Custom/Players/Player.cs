@@ -13,8 +13,7 @@ namespace GXPEngine.Custom
         public Vector2 velocity;
         private readonly float radius;
         private const float BRAKINGFORCE = 0.1f;
-        private const float JUMPFORCE = 2500f;
-        private const float ACCELERATION = 0.2f;
+        private const float ACCELERATION = 1f;
         private const float GRAVITY = 0.4f;
         private readonly int playertype;
 
@@ -22,12 +21,12 @@ namespace GXPEngine.Custom
         private const int JUMPINTERVAL = 1000;
         private const float JUMPSTRENGTH = 15f;
         private int lastJumpTime;
-        private bool isGrounded = false;
+        private bool isGrounded;
         
         //collision variables
         private Vector2 oldPosition;
         private CollisionInfo firstCollision;
-        private const float BOUNCINESS = 0.98f;
+        private const float BOUNCINESS = 0f;
         private const int MAX_DISTANCE = 250;
 
 
@@ -46,22 +45,22 @@ namespace GXPEngine.Custom
             Controls();
             position += velocity;
             firstCollision = FindEarliestCollision();
-            Console.WriteLine(firstCollision);
 
             if (firstCollision != null)
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
             }
-            else
-            {
-	            isGrounded = false;
-            }
+            // else
+            // {
+            //   isGrounded = false;
+            // }
             UpdateScreenPosition();
         }
 
         private void Controls()
         {
+	        
             switch (playertype)
             {
                     case 1 :
@@ -229,7 +228,12 @@ namespace GXPEngine.Custom
 		        position = poi;
 		        velocity.Reflect(1,col.normal);
 		        velocity *= BOUNCINESS;
-		        
+		        MyGame myGame = (MyGame)game;
+
+		        if (col.other.parent is Spike)
+		        {
+			        myGame.health--;
+		        }
 		        
         }
 

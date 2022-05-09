@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom.Collisions;
@@ -16,8 +17,8 @@ namespace GXPEngine.Custom
         private Vector2 point2;
         private Vector2 point3;
         private Vector2 point4;
-
-        public Block(Vector2 position) : base("square.png")
+        
+        public Block(Vector2 position, string filename = "square.png") : base(filename)
         {
             this.position = position;
             radius = height / 2;
@@ -63,12 +64,14 @@ namespace GXPEngine.Custom
         }
 
         private void AddLine (Vector2 start, Vector2 end) {
+            
             LineSegment line = new (start, end,this , 0xff00ff00, 3);
             lines.Add (line);
             LineSegment lineOpp = new (end, start,this,  0xff00ff00, 3);
             lines.Add (lineOpp);
-            Ball endcap = new (end + position, 0,this);
+            Ball endcap = new (end, 0,this);
             caps.Add(endcap);
+            
             foreach (LineSegment l in lines)
             {
                 Game.main.AddChild(l);
