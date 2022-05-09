@@ -14,7 +14,7 @@ namespace GXPEngine.Custom
         private readonly float radius;
         private const float BRAKINGFORCE = 0.1f;
         private const float ACCELERATION = 1f;
-        private const float GRAVITY = 0.4f;
+        private static float GRAVITY = 0.4f;
         private readonly int playertype;
 
         //jump variables
@@ -26,7 +26,7 @@ namespace GXPEngine.Custom
         //collision variables
         private Vector2 oldPosition;
         private CollisionInfo firstCollision;
-        private const float BOUNCINESS = 0f;
+        private static float BOUNCINESS = 0f;
         private const int MAX_DISTANCE = 250;
 
 
@@ -50,11 +50,8 @@ namespace GXPEngine.Custom
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
+                velocity.y -= 0.8f;
             }
-            // else
-            // {
-            //   isGrounded = false;
-            // }
             UpdateScreenPosition();
         }
 
