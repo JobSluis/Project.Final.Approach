@@ -7,7 +7,7 @@ namespace GXPEngine.Custom.Collisions
     {
         public Vector2 position;
         public readonly int radius;
-        private readonly GameObject owner;
+        public readonly GameObject owner;
 
         public Ball(Vector2 position,int radius, GameObject owner)
         {

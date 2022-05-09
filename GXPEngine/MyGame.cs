@@ -15,8 +15,11 @@ namespace GXPEngine
 	public class MyGame : Game
 	{
 		public readonly List<Block> blocks;
-		public int health = 4;
-		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
+		private int health = 4;
+		private const int INVINCIBILITYTIME = 1000;
+		private int lastHitTime;
+
+		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			SmallPlayer player = new SmallPlayer(100, 100,1);
 			AddChild(player);
@@ -45,6 +48,13 @@ namespace GXPEngine
 		void Update()
 		{
 			Console.WriteLine(health);
+		}
+
+		public void LoseLife()
+		{
+			if (Time.time <= lastHitTime) return;
+			health--;
+			lastHitTime = Time.time + INVINCIBILITYTIME;
 		}
 		
 		// public int GetNumberOfBlocks()
