@@ -38,7 +38,7 @@ namespace GXPEngine
 				blocks.Add(groundBlock);
 			}
 			
-			Spike spike = new (new Vector2(8*64,height - 120));
+			Spike spike = new (new Vector2(8*64,height - 114));
 			AddChild(spike);
 			blocks.Add(spike);
 			
