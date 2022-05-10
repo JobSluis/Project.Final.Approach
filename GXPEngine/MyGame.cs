@@ -17,7 +17,10 @@ namespace GXPEngine
 	public class MyGame : Game
 	{
 		public readonly List<Block> blocks;
-		public int health = 4;
+		public readonly List<Laser> lasers;
+		private int health = 4;
+		private const int INVINCIBILITYTIME = 1000; 
+		private int lastHitTime; 
 		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			SmallPlayer player = new (100, 100,1);
@@ -28,8 +31,9 @@ namespace GXPEngine
 			AddChild(chain);
 
 			
-			StageManager.StageLoader.LoadStage(Stages.Test1);
+			//StageManager.StageLoader.LoadStage(Stages.Test1);
 			blocks = new List<Block>();
+			lasers = new List<Laser>();
 			
 			for (int i = 0; i < 50;i++)
 			{
@@ -42,25 +46,32 @@ namespace GXPEngine
 			AddChild(spike);
 			blocks.Add(spike);
 			
+			Spike spike2 = new (new Vector2(7*64,height - 114));
+			AddChild(spike2);
+			blocks.Add(spike2);
+
+			Laser laser = new Laser(new Vector2(10*64-64-32,height - 114 - 64 - 64-16 - 64));
+			AddChild(laser);
+			lasers.Add(laser);
+
+			Block block = new Block(new Vector2(10 * 64, height - 114 - 128 - 64));
+			AddChild(block);
+			blocks.Add(block);
+			
 			Console.WriteLine("MyGame initialized");
 		}
+		
+		public void LoseLife() 
+		{ 
+			if (Time.time <= lastHitTime) return; 
+			health--; 
+			lastHitTime = Time.time + INVINCIBILITYTIME; 
+		} 
 
 		void Update()
 		{
 			Console.WriteLine(health);
 		}
-		
-		// public int GetNumberOfBlocks()
-		// {
-		// 	return blocks.Count;
-		// }
-		//
-		// public Block GetBlocks(int index) {
-		// 	if (index >= 0 && index < blocks.Count) {
-		// 		return blocks [index];
-		// 	}
-		// 	return null;
-		// }
 
 		static void Main()							// Main() is the first method that's called when the program is run
 		{

@@ -15,7 +15,7 @@ namespace GXPEngine.Custom.Collisions
         private Vector2 point3;
         private Vector2 point4;
         
-        public Spike(Vector2 position, string filename = "triangle.png") : base(position, filename)
+        public Spike(Vector2 position, string filename = "spike.png") : base(position, filename)
         {
             SetXY(position);
             caps = new List<Ball>();

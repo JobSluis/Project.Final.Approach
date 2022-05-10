@@ -20,6 +20,7 @@ namespace GXPEngine.Custom
         //jump variables
         private const int JUMPINTERVAL = 1000;
         private const float JUMPSTRENGTH = 15f;
+        private const float JUMPSTRENGTHSMALL = 10f;
         private int lastJumpTime;
         private bool isGrounded;
         
@@ -51,10 +52,6 @@ namespace GXPEngine.Custom
                 ResolveCollision(firstCollision);
                 isGrounded = true;
             }
-            // else
-            // {
-            //   isGrounded = false;
-            // }
             UpdateScreenPosition();
         }
 
@@ -137,7 +134,14 @@ namespace GXPEngine.Custom
         private void Jump()
         {
             isGrounded = false;
-            velocity.y -= JUMPSTRENGTH;
+            if (playertype == 1)
+            {
+	            velocity.y -= JUMPSTRENGTHSMALL;
+            }
+            else
+            {
+	            velocity.y -= JUMPSTRENGTH;
+            }
         }
 
         private CollisionInfo FindEarliestCollision()
@@ -171,6 +175,55 @@ namespace GXPEngine.Custom
 				//special check for performance reasons, seeing how far they are away from the ball before calculating
 				if (g.position.x < position.x - MAX_DISTANCE || g.position.x > position.x + MAX_DISTANCE ||		
 				    g.position.y < position.y - MAX_DISTANCE || g.position.y > position.y + MAX_DISTANCE) continue;
+				Vector2 diffVec = position - l.end;
+				Vector2 lineVec = l.end - l.start;
+				float ballDistance = lineVec.Normal().Dot(diffVec);
+				if (!(ballDistance < radius)) continue;
+				Vector2 oldDiffVec = oldPosition - l.end;
+				float a = lineVec.Normal().Dot(oldDiffVec) - radius;
+				float b = -lineVec.Normal().Dot(velocity);
+				if (!(a >= 0) || !(b > 0)) continue;
+				float toi = a / b;
+				Vector2 poi = oldPosition + velocity * toi;
+				Vector2 diffVec2 = l.end - poi;
+				Vector2 unitVec = lineVec.Normalized();
+				float distance = diffVec2.Dot(unitVec);
+				if (!(toi <= 1)) continue;
+				if (!(distance >= 0) || !(distance < lineVec.Length())) continue;
+				CollisionInfo lineCheck = new CollisionInfo(lineVec.Normal(), l, toi);
+				if (lowestToi == null || lowestToi.timeOfImpact > lineCheck.timeOfImpact)
+				{
+					lowestToi = lineCheck;
+				}
+			}
+		}
+		foreach (Laser t in myGame.lasers)  //caps collision
+		{
+			if (!t.isActive) continue;
+			for (int i = 0; i < t.GetNumberOfCaps(); i++)
+			{
+				Ball mover = t.GetCaps(i);
+				// if (mover == this) continue;
+				//special check for performance reasons, seeing how far they are away from the ball before calculating
+				if(mover.position.x < position.x - MAX_DISTANCE || mover.position.y < position.y - MAX_DISTANCE ||
+				   mover.position.x > position.x + MAX_DISTANCE || mover.position.y > position.y + MAX_DISTANCE) continue;
+					
+				CollisionInfo ballcheck = Ballcheck(mover);
+				if (ballcheck == null) continue;
+				if (lowestToi == null || lowestToi.timeOfImpact > ballcheck.timeOfImpact)
+				{
+					lowestToi = ballcheck;
+				}
+				
+			}
+
+			for (int i = 0; i < t.GetNumberOfLines(); i++) //line collisions
+			{
+				LineSegment l = t.GetLine(i);
+				Laser g = (Laser) l.owner;
+				//special check for performance reasons, seeing how far they are away from the ball before calculating
+				if (g.x < position.x - MAX_DISTANCE || g.x > position.x + MAX_DISTANCE ||		
+				    g.y < position.y - MAX_DISTANCE || g.y > position.y + MAX_DISTANCE) continue;
 				Vector2 diffVec = position - l.end;
 				Vector2 lineVec = l.end - l.start;
 				float ballDistance = lineVec.Normal().Dot(diffVec);
@@ -229,12 +282,13 @@ namespace GXPEngine.Custom
 		        velocity.Reflect(1,col.normal);
 		        velocity *= BOUNCINESS;
 		        MyGame myGame = (MyGame)game;
-
-		        if (col.other.parent is Spike)
+		        if (col.other is not LineSegment l) return;
+		        if(l.owner is Spike or Laser)
 		        {
-			        myGame.health--;
+			        myGame.LoseLife();
 		        }
-		        
+
+
         }
 
 
