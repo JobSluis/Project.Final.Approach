@@ -4,6 +4,8 @@ using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom;
 using GXPEngine.Custom.Collisions;
+using GXPEngine.Custom.Level_components;
+using TiledMapParser;
 
 // System contains a lot of default C# libraries 
 // GXPEngine contains the engine
@@ -15,30 +17,28 @@ namespace GXPEngine
 	public class MyGame : Game
 	{
 		public readonly List<Block> blocks;
-		private int health = 4;
-		private const int INVINCIBILITYTIME = 1000;
-		private int lastHitTime;
-
+		public int health = 4;
 		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
-			SmallPlayer player = new SmallPlayer(100, 100,1);
+			SmallPlayer player = new (100, 100,1);
 			AddChild(player);
-			BigPlayer player2 = new BigPlayer(400, 100,2);
+			BigPlayer player2 = new (400, 100,2);
 			AddChild(player2);
-			Chain chain = new Chain(player, player2);
+			Chain chain = new (player, player2);
 			AddChild(chain);
 
+			
+			StageManager.StageLoader.LoadStage(Stages.Test1);
 			blocks = new List<Block>();
-
+			
 			for (int i = 0; i < 50;i++)
 			{
-				Block groundBlock = new (new Vector2(i*63,height - 50));
+				Block groundBlock = new (new Vector2(i*64,height - 50));
 				AddChild(groundBlock);
 				blocks.Add(groundBlock);
-				Console.WriteLine(groundBlock.y);
 			}
-
-			Spike spike = new (new Vector2(8*63,height - 120));
+			
+			Spike spike = new (new Vector2(8*64,height - 120));
 			AddChild(spike);
 			blocks.Add(spike);
 			
@@ -48,13 +48,6 @@ namespace GXPEngine
 		void Update()
 		{
 			Console.WriteLine(health);
-		}
-
-		public void LoseLife()
-		{
-			if (Time.time <= lastHitTime) return;
-			health--;
-			lastHitTime = Time.time + INVINCIBILITYTIME;
 		}
 		
 		// public int GetNumberOfBlocks()

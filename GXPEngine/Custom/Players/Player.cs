@@ -51,10 +51,10 @@ namespace GXPEngine.Custom
                 ResolveCollision(firstCollision);
                 isGrounded = true;
             }
-            else
-            {
-              isGrounded = false;
-            }
+            // else
+            // {
+            //   isGrounded = false;
+            // }
             UpdateScreenPosition();
         }
 
@@ -230,13 +230,11 @@ namespace GXPEngine.Custom
 		        velocity *= BOUNCINESS;
 		        MyGame myGame = (MyGame)game;
 
-		        switch (col.other)
+		        if (col.other.parent is Spike)
 		        {
-			        case LineSegment { owner: Spike }:
-			        case Ball { owner: Spike }:
-				        myGame.LoseLife();
-				        break;
+			        myGame.health--;
 		        }
+		        
         }
 
 
