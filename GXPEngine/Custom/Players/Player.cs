@@ -16,7 +16,7 @@ namespace GXPEngine.Custom
         private const float ACCELERATION = 0.4f;
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
-        private bool isOverlapping;
+        private bool isPressingInteract;
 
         //jump variables
         private const int JUMPINTERVAL = 1000;
@@ -61,8 +61,7 @@ namespace GXPEngine.Custom
 
         private void Controls()
         {
-			KeyOverlap();
-			MyGame myGame = (MyGame)game;
+	        MyGame myGame = (MyGame)game;
 			switch (playertype)
             {
                 case 1 :
@@ -85,6 +84,7 @@ namespace GXPEngine.Custom
 
                     if (Input.GetKey(Key.E))
                     {
+	                    isPressingInteract = true;
 	                    foreach (KeyCollectable k in myGame.keys)
 	                    {
 		                    if (HitTest(k))
@@ -112,6 +112,17 @@ namespace GXPEngine.Custom
                     if (Input.GetKey(Key.LEFT))
                     {
                         velocity += new Vector2(-1f, 0) * ACCELERATION;
+                    }
+                    if (Input.GetKey(Key.E))
+                    {
+	                    isPressingInteract = true;
+	                    foreach (KeyCollectable k in myGame.keys)
+	                    {
+		                    if (HitTest(k))
+		                    {
+			                    k.Pickup();
+		                    }
+	                    }                   
                     }
                         
                     break;
@@ -304,21 +315,18 @@ namespace GXPEngine.Custom
 		        velocity *= BOUNCINESS;
 		        MyGame myGame = (MyGame)game;
 		        if (col.other is not LineSegment l) return;
-		        if(l.owner is Spike or Laser)
+		        switch (l.owner)
 		        {
-			        myGame.LoseLife();
+			        case Spike or Laser:
+				        myGame.LoseLife();
+				        break;
+			        case BreakableBlock b:
+				        if (isPressingInteract)
+				        {
+					        b.Break();
+				        }
+				        break;
 		        }
-
-
-        }
-
-        private void KeyOverlap()
-        {
-	        MyGame myGame = (MyGame)game;
-	        foreach (KeyCollectable k in myGame.keys)
-	        {
-		        isOverlapping = HitTest(k);
-	        }
         }
 
         private void UpdateScreenPosition()

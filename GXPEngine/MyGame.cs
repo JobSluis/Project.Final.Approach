@@ -20,6 +20,7 @@ namespace GXPEngine
 		public readonly List<Block> blocks;
 		public readonly List<Laser> lasers;
 		public readonly List<KeyCollectable> keys;
+		public readonly List<BreakableBlock> breakable;
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime; 
@@ -37,6 +38,7 @@ namespace GXPEngine
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
 			keys = new List<KeyCollectable>();
+			breakable = new List<BreakableBlock>();
 			
 			for (int i = 0; i < 50;i++)
 			{
@@ -64,6 +66,11 @@ namespace GXPEngine
 			KeyCollectable key = new (new Vector2(5 * 64,height - 114-114));
 			AddChild(key);
 			keys.Add(key);
+
+			BreakableBlock breakBlock = new(new Vector2(6 * 64, height - 114 - 114));
+			AddChild(breakBlock);
+			blocks.Add(breakBlock);
+			breakable.Add(breakBlock);
 			
 			Console.WriteLine("MyGame initialized");
 		}
