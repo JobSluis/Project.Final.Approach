@@ -51,9 +51,6 @@ namespace GXPEngine.Custom
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
-            } else if (firstCollision == null)
-            {
-                isGrounded = false;
             }
             UpdateScreenPosition();
         }
