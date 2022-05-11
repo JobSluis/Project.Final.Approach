@@ -24,7 +24,7 @@ namespace GXPEngine
 		public readonly List<Button> buttons;
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
-		private int lastHitTime; 
+		private int lastHitTime;
 		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			Sprite background = new Sprite("backgroundd.png");

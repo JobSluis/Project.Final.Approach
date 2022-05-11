@@ -118,9 +118,8 @@ namespace GXPEngine.Custom
                     {
                         velocity += new Vector2(-1f, 0) * ACCELERATION;
                     }
-                    if (Input.GetKey(Key.E))
+                    if (Input.GetKey(Key.RIGHT_CTRL))
                     {
-	                    isPressingInteract = true;
 	                    foreach (KeyCollectable k in myGame.keys)
 	                    {
 		                    if (HitTest(k))
@@ -326,7 +325,7 @@ namespace GXPEngine.Custom
 				        myGame.LoseLife();
 				        break;
 			        case BreakableBlock b:
-				        if (isPressingInteract)
+				        if (isPressingInteract && playertype == 1)
 				        {
 					        b.Break();
 				        }
