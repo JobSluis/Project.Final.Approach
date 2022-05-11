@@ -45,8 +45,12 @@
     <Compile Include="Custom\Collisions\Ball.cs" />
     <Compile Include="Custom\Collisions\Block.cs" />
     <Compile Include="Custom\Collisions\CollisionInfo.cs" />
+    <Compile Include="Custom\Collisions\Laser.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
     <Compile Include="Custom\Collisions\Spike.cs" />
+    <Compile Include="Custom\Level components\Stage.cs" />
+    <Compile Include="Custom\Level components\StageLoader.cs" />
+    <Compile Include="Custom\Level components\Stages.cs" />
     <Compile Include="Custom\Players\BigPlayer.cs" />
     <Compile Include="Custom\Players\Player.cs" />
     <Compile Include="Custom\Players\SmallPlayer.cs" />
