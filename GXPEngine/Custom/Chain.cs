@@ -31,10 +31,10 @@ namespace GXPEngine.Custom
 
         private void LengthCheck()
         {
-            Vector2 positionDelta = player1.position - player2.position;
+            Vector2 positionDelta = player2.position - player1.position;
             
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player2.velocity += positionDelta.Normalized() * CHAINSTRENGTH;
+            player1.velocity += positionDelta.Normalized() * CHAINSTRENGTH;
             // if (chainLength > ULTIMATE_MAX_CHAIN_LENGTH)
             // {
             //     player1.velocity += positionDelta.Normalized() * CHAINSTRENGTH;

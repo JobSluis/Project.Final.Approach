@@ -4,9 +4,8 @@ namespace GXPEngine.Custom
 {
     public class BigPlayer : Player
     {
-        public BigPlayer(int x, int y, int player) : base(x,y,player)
+        public BigPlayer() : base(400, 750, 1, "big_player_idle.png", 1, 1, -1)
         {
-            
         }
 
         void Update()

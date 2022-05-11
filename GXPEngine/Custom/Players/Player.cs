@@ -7,13 +7,13 @@ using GXPEngine.Custom.Collisions;
 
 namespace GXPEngine.Custom
 {
-    public class Player : Sprite
+    public class Player : AnimationSprite
     {
         public Vector2 position;
         public Vector2 velocity;
         private readonly float radius;
         private const float BRAKINGFORCE = 0.1f;
-        private const float ACCELERATION = 1f;
+        private const float ACCELERATION = 0.4f;
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
 
@@ -30,13 +30,13 @@ namespace GXPEngine.Custom
         private const int MAX_DISTANCE = 250;
 
 
-        protected Player(int x, int y, int player) : base("circle.png")
+        protected Player(int x, int y, int player, string texturePath, int cols, int rows, int frames) : base(texturePath, cols, rows)
         {
             position = new Vector2(x, y);
             SetXY(x, y);
             playertype = player;
             SetOrigin(width/2,height/2);
-            radius = height / 2;
+            radius = 1080 / 2;
         }
         
         protected void Update()
@@ -45,12 +45,14 @@ namespace GXPEngine.Custom
             Controls();
             position += velocity;
             firstCollision = FindEarliestCollision();
-
+            
             if (firstCollision != null)
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
-                velocity.y -= 0.8f;
+            } else if (firstCollision == null)
+            {
+                isGrounded = false;
             }
             UpdateScreenPosition();
         }
@@ -60,45 +62,45 @@ namespace GXPEngine.Custom
 	        
             switch (playertype)
             {
-                    case 1 :
+                case 1 :
 
-                        if (Input.GetKeyDown(Key.W) && Time.time > lastJumpTime)
-                        {
-                            Jump();
-                            lastJumpTime = Time.time + JUMPINTERVAL;
-                        }
+                    if (Input.GetKeyDown(Key.W) && Time.time > lastJumpTime)
+                    {
+                        Jump();
+                        lastJumpTime = Time.time + JUMPINTERVAL;
+                    }
 
-                        if (Input.GetKey(Key.D))
-                        {
-                            velocity += new Vector2(1f, 0) * ACCELERATION;
-                        }
+                    if (Input.GetKey(Key.D))
+                    {
+                        velocity += new Vector2(1f, 0) * ACCELERATION;
+                    }
 
-                        if (Input.GetKey(Key.A))
-                        {
-                            velocity += new Vector2(-1f, 0) * ACCELERATION;
-                        }
+                    if (Input.GetKey(Key.A))
+                    {
+                        velocity += new Vector2(-1f, 0) * ACCELERATION;
+                    }
 
-                        break;
+                    break;
                     
-                    case 2 :
+                case 2 :
 
-                        if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
-                        {
-                            Jump();
-                            lastJumpTime = Time.time + JUMPINTERVAL;
-                        }
+                    if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
+                    {
+                        Jump();
+                        lastJumpTime = Time.time + JUMPINTERVAL;
+                    }
 
-                        if (Input.GetKey(Key.RIGHT))
-                        {
-                            velocity += new Vector2(1f, 0) * ACCELERATION;
-                        }
+                    if (Input.GetKey(Key.RIGHT))
+                    {
+                        velocity += new Vector2(1f, 0) * ACCELERATION;
+                    }
 
-                        if (Input.GetKey(Key.LEFT))
-                        {
-                            velocity += new Vector2(-1f, 0) * ACCELERATION;
-                        }
+                    if (Input.GetKey(Key.LEFT))
+                    {
+                        velocity += new Vector2(-1f, 0) * ACCELERATION;
+                    }
                         
-                        break;
+                    break;
             }
             
             if (velocity.x > 0)
@@ -128,6 +130,11 @@ namespace GXPEngine.Custom
             if (!isGrounded)
             {
 	            velocity.y += GRAVITY;
+            }
+
+            if (isGrounded)
+            {
+                velocity.y -= GRAVITY;
             }
         }
 

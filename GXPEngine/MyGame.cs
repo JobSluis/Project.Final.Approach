@@ -18,9 +18,9 @@ namespace GXPEngine
 		public int health = 4;
 		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
 		{
-			SmallPlayer player = new SmallPlayer(100, 100,1);
+			SmallPlayer player = new();
 			AddChild(player);
-			BigPlayer player2 = new BigPlayer(400, 100,2);
+			BigPlayer player2 = new();
 			AddChild(player2);
 			Chain chain = new Chain(player, player2);
 			AddChild(chain);
