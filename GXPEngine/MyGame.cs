@@ -25,20 +25,22 @@ namespace GXPEngine
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime; 
-		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
+		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
 		{
+			Sprite background = new Sprite("backgroundd.png");
+			background.SetXY(-32,0);
+			AddChild(background);
+			Sprite display = new Sprite("Profile_icon.png");
+			display.SetScaleXY(0.5f,0.5f);
+			display.SetXY(0,0);
+			AddChild(display);
 			SmallPlayer player = new();
 			AddChild(player);
 			BigPlayer player2 = new();
 			AddChild(player2);
 			Chain chain = new (player, player2);
 			AddChild(chain);
-			Sprite background = new Sprite("backgroundd.png");
-			AddChild(background);
-			Sprite display = new Sprite("Profile_icon.png");
-			display.SetScaleXY(0.5f,0.5f);
-			display.SetXY(0,0);
-			AddChild(display);
+			
 			
 
 			//TODO Level loader
@@ -76,10 +78,7 @@ namespace GXPEngine
 			Laser laser = new (new Vector2(10*64-64-32,height - 322));
 			AddChild(laser);
 			lasers.Add(laser);
-
-			Block block = new (new Vector2(10 * 64, height - 306));
-			AddChild(block);
-			blocks.Add(block);
+			
 
 			KeyCollectable key = new (new Vector2(5 * 64,height - 114-114));
 			AddChild(key);

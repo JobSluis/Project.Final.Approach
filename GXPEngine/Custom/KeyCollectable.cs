@@ -4,7 +4,7 @@ namespace GXPEngine.Custom
 {
     public class KeyCollectable : Sprite
     {
-        public KeyCollectable(Vector2 position) : base("colors.png")
+        public KeyCollectable(Vector2 position) : base("key.png")
         {
             SetXY(position);
         }
