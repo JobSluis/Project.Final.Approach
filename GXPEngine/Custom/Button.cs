@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System;
+using System.Dynamic;
 using GXPEngine.Core;
 
 namespace GXPEngine.Custom
@@ -19,7 +20,8 @@ namespace GXPEngine.Custom
 
         public void Press()
         {
-            //TODO add the door
+            Console.WriteLine("pressed");
+            door.Destroy();
         }
     }
 }

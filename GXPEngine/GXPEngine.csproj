@@ -47,6 +47,7 @@
     <Compile Include="Custom\Collisions\Block.cs" />
     <Compile Include="Custom\Collisions\BreakableBlock.cs" />
     <Compile Include="Custom\Collisions\CollisionInfo.cs" />
+    <Compile Include="Custom\Collisions\Door.cs" />
     <Compile Include="Custom\Collisions\Laser.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
     <Compile Include="Custom\Collisions\Spike.cs" />

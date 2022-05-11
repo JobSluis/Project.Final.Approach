@@ -17,7 +17,7 @@ namespace GXPEngine.Custom.Collisions
         private Vector2 point3;
         private Vector2 point4;
         public bool isActive;
-        public Laser(Vector2 position) : base("Laser_sprite_sheet.png", 2, 5, 10)
+        public Laser(Vector2 position) : base("Laser_sprite_sheet1.png", 2, 5, 10)
         {
             width /= 4;
             height /= 4;

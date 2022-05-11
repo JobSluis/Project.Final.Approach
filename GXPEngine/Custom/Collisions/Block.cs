@@ -83,5 +83,11 @@ namespace GXPEngine.Custom
                 Game.main.AddChild(c);
             }
         }
+        
+        protected override void OnDestroy()
+        {
+            MyGame myGame = (MyGame) game;
+            myGame.blocks.Remove(this);
+        }
     }
 }

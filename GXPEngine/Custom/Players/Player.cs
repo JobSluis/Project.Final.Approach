@@ -95,8 +95,11 @@ namespace GXPEngine.Custom
 
 	                    foreach (Button b in myGame.buttons)
 	                    {
-		                    
-	                    }
+		                    if (HitTest(b))
+		                    {
+			                    b.Press();
+		                    }
+	                    } 
                     }
 
                     break;
@@ -126,7 +129,15 @@ namespace GXPEngine.Custom
 		                    {
 			                    k.Pickup();
 		                    }
-	                    }                   
+	                    }     
+	                    
+	                    foreach (Button b in myGame.buttons)
+	                    {
+		                    if (HitTest(b))
+		                    {
+			                    b.Press();
+		                    }
+	                    } 
                     }
                         
                     break;
