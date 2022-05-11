@@ -20,6 +20,7 @@ namespace GXPEngine.Custom
         
         public Block(Vector2 position, string filename = "square.png") : base(filename)
         {
+            
             this.position = position;
             radius = height / 2;
             SetXY(position);

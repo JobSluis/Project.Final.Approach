@@ -42,7 +42,15 @@ namespace GXPEngine
 			
 			for (int i = 0; i < 50;i++)
 			{
-				Block groundBlock = new (new Vector2(i*64,height - 50));
+				int rand = Utils.Random(1, 3);
+				string filename = rand switch
+				{
+					1 => "tile_1.png",
+					2 => "tile_2.png",
+					3 => "tile_3.png",
+					_ => "tile_1.png"
+				};
+				Block groundBlock = new (new Vector2(i*64,height - 50), filename);
 				AddChild(groundBlock);
 				blocks.Add(groundBlock);
 			}
