@@ -37,11 +37,12 @@ namespace GXPEngine.Custom
             SetXY(x, y);
             playertype = player;
             SetOrigin(width/2,height/2);
-            radius = 1080 / 2;
+            radius = height / 2;
         }
         
         protected void Update()
         {
+            UpdateScreenPosition();
             oldPosition = position;
             Controls();
             position += velocity;
@@ -51,8 +52,10 @@ namespace GXPEngine.Custom
             {
                 ResolveCollision(firstCollision);
                 isGrounded = true;
+            } else if (firstCollision == null)
+            {
+                isGrounded = false;
             }
-            UpdateScreenPosition();
         }
 
         private void Controls()
