@@ -42,7 +42,7 @@ namespace GXPEngine.Custom.Collisions
                 frameNumber = frameNumber == 6 ? 1 : 6;
                 lastShootTime = Time.time + SHOOTINTERVAL;
             }
-
+            //TODO animate the laser correctly
             isActive = frameNumber switch
             {
                 1 => false,

@@ -6,7 +6,7 @@ using GXPEngine.Core;
 using GXPEngine.Custom.Collisions;
 
 namespace GXPEngine.Custom
-{
+{   //TODO Crouching, animating and potentially fixing the movement if possible
     public class Player : AnimationSprite
     {
         public Vector2 position;
@@ -91,7 +91,12 @@ namespace GXPEngine.Custom
 		                    {
 			                    k.Pickup();
 		                    }
-	                    }                   
+	                    }
+
+	                    foreach (Button b in myGame.buttons)
+	                    {
+		                    
+	                    }
                     }
 
                     break;

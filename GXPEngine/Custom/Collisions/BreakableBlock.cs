@@ -12,7 +12,7 @@ namespace GXPEngine.Custom.Collisions
         private Vector2 point2;
         private Vector2 point3;
         private Vector2 point4;
-        public BreakableBlock(Vector2 position) : base(position,"Checkers.png")
+        public BreakableBlock(Vector2 position) : base(position,"tile.png")
         {
             caps = new List<Ball>();
             lines = new List<LineSegment>();

@@ -21,6 +21,7 @@ namespace GXPEngine
 		public readonly List<Laser> lasers;
 		public readonly List<KeyCollectable> keys;
 		public readonly List<BreakableBlock> breakable;
+		public readonly List<Button> buttons;
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime; 
@@ -33,12 +34,14 @@ namespace GXPEngine
 			Chain chain = new (player, player2);
 			AddChild(chain);
 
-			
+			//TODO Level loader
 			//StageManager.StageLoader.LoadStage(Stages.Test1);
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
 			keys = new List<KeyCollectable>();
 			breakable = new List<BreakableBlock>();
+			buttons = new List<Button>();
+
 			
 			for (int i = 0; i < 50;i++)
 			{
@@ -90,21 +93,10 @@ namespace GXPEngine
 			lastHitTime = Time.time + INVINCIBILITYTIME; 
 		} 
 		
-		public int GetNumberOfKeys()
-		{
-			return keys.Count;
-		}
-        
-		public KeyCollectable GetKeys(int index) {
-			if (index >= 0 && index < keys.Count) {
-				return keys [index];
-			}
-			return null;
-		}
 
 		void Update()
 		{
-			Console.WriteLine(health);
+			//Console.WriteLine(health);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run
