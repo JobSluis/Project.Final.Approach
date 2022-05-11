@@ -36,9 +36,11 @@ namespace GXPEngine.Custom
         {
             position = new Vector2(x, y);
             SetXY(x, y);
+            width /= 2;
+            height /= 2;
             playertype = player;
             SetOrigin(width/2,height/2);
-            radius = 1080 / 2;
+            radius = height/2;
         }
         
         protected void Update()
