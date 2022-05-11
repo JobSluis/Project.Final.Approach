@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom;
@@ -18,6 +19,7 @@ namespace GXPEngine
 	{
 		public readonly List<Block> blocks;
 		public readonly List<Laser> lasers;
+		public readonly List<KeyCollectable> keys;
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime; 
@@ -34,6 +36,7 @@ namespace GXPEngine
 			//StageManager.StageLoader.LoadStage(Stages.Test1);
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
+			keys = new List<KeyCollectable>();
 			
 			for (int i = 0; i < 50;i++)
 			{
@@ -42,21 +45,25 @@ namespace GXPEngine
 				blocks.Add(groundBlock);
 			}
 			
-			Spike spike = new (new Vector2(8*64,height - 114));
+			Spike spike = new(new Vector2(8*64,height - 114));
 			AddChild(spike);
 			blocks.Add(spike);
 			
-			Spike spike2 = new (new Vector2(7*64,height - 114));
+			Spike spike2 = new(new Vector2(7*64,height - 114));
 			AddChild(spike2);
 			blocks.Add(spike2);
 
-			Laser laser = new Laser(new Vector2(10*64-64-32,height - 114 - 64 - 64-16 - 64));
+			Laser laser = new (new Vector2(10*64-64-32,height - 322));
 			AddChild(laser);
 			lasers.Add(laser);
 
-			Block block = new Block(new Vector2(10 * 64, height - 114 - 128 - 64));
+			Block block = new (new Vector2(10 * 64, height - 306));
 			AddChild(block);
 			blocks.Add(block);
+
+			KeyCollectable key = new (new Vector2(5 * 64,height - 114-114));
+			AddChild(key);
+			keys.Add(key);
 			
 			Console.WriteLine("MyGame initialized");
 		}
@@ -67,6 +74,18 @@ namespace GXPEngine
 			health--; 
 			lastHitTime = Time.time + INVINCIBILITYTIME; 
 		} 
+		
+		public int GetNumberOfKeys()
+		{
+			return keys.Count;
+		}
+        
+		public KeyCollectable GetKeys(int index) {
+			if (index >= 0 && index < keys.Count) {
+				return keys [index];
+			}
+			return null;
+		}
 
 		void Update()
 		{
