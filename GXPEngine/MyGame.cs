@@ -33,6 +33,13 @@ namespace GXPEngine
 			AddChild(player2);
 			Chain chain = new (player, player2);
 			AddChild(chain);
+			Sprite background = new Sprite("backgroundd.png");
+			AddChild(background);
+			Sprite display = new Sprite("Profile_icon.png");
+			display.SetScaleXY(0.5f,0.5f);
+			display.SetXY(0,0);
+			AddChild(display);
+			
 
 			//TODO Level loader
 			//StageManager.StageLoader.LoadStage(Stages.Test1);
