@@ -48,6 +48,7 @@
     <Compile Include="Custom\Collisions\Laser.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
     <Compile Include="Custom\Collisions\Spike.cs" />
+    <Compile Include="Custom\KeyCollectable.cs" />
     <Compile Include="Custom\Level components\Stage.cs" />
     <Compile Include="Custom\Level components\StageLoader.cs" />
     <Compile Include="Custom\Level components\Stages.cs" />

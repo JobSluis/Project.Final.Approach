@@ -16,6 +16,7 @@ namespace GXPEngine.Custom
         private const float ACCELERATION = 0.4f;
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
+        private bool isOverlapping;
 
         //jump variables
         private const int JUMPINTERVAL = 1000;
@@ -57,8 +58,9 @@ namespace GXPEngine.Custom
 
         private void Controls()
         {
-	        
-            switch (playertype)
+			KeyOverlap();
+			MyGame myGame = (MyGame)game;
+			switch (playertype)
             {
                 case 1 :
 
@@ -76,6 +78,17 @@ namespace GXPEngine.Custom
                     if (Input.GetKey(Key.A))
                     {
                         velocity += new Vector2(-1f, 0) * ACCELERATION;
+                    }
+
+                    if (Input.GetKey(Key.E))
+                    {
+	                    foreach (KeyCollectable k in myGame.keys)
+	                    {
+		                    if (HitTest(k))
+		                    {
+			                    k.Pickup();
+		                    }
+	                    }                   
                     }
 
                     break;
@@ -296,6 +309,14 @@ namespace GXPEngine.Custom
 
         }
 
+        private void KeyOverlap()
+        {
+	        MyGame myGame = (MyGame)game;
+	        foreach (KeyCollectable k in myGame.keys)
+	        {
+		        isOverlapping = HitTest(k);
+	        }
+        }
 
         private void UpdateScreenPosition()
         {

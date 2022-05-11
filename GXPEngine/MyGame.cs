@@ -18,6 +18,7 @@ namespace GXPEngine
 	{
 		public readonly List<Block> blocks;
 		public readonly List<Laser> lasers;
+		public readonly List<KeyCollectable> keys;
 		private int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime; 
@@ -34,6 +35,7 @@ namespace GXPEngine
 			//StageManager.StageLoader.LoadStage(Stages.Test1);
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
+			keys = new List<KeyCollectable>();
 			
 			for (int i = 0; i < 50;i++)
 			{
@@ -67,6 +69,18 @@ namespace GXPEngine
 			health--; 
 			lastHitTime = Time.time + INVINCIBILITYTIME; 
 		} 
+		
+		public int GetNumberOfKeys()
+		{
+			return keys.Count;
+		}
+        
+		public KeyCollectable GetKeys(int index) {
+			if (index >= 0 && index < keys.Count) {
+				return keys [index];
+			}
+			return null;
+		}
 
 		void Update()
 		{
