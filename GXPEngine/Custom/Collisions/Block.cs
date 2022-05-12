@@ -30,10 +30,10 @@ namespace GXPEngine.Custom
             point2 = new Vector2(x + width, y);
             point3 = new Vector2(x + width, y + height);
             point4 = new Vector2(x , y + height);
-            AddLine(point1,point2, this);
-            AddLine(point2,point3, this);
-            AddLine(point3,point4, this);
-            AddLine(point4,point1, this);
+            AddLine(point1,point2, this, false);
+            AddLine(point2,point3, this, false);
+            AddLine(point3,point4, this, true);  //special action
+            AddLine(point4,point1, this, true);
         }
 
         void Update()
@@ -64,13 +64,13 @@ namespace GXPEngine.Custom
             return null;
         }
 
-        protected void AddLine (Vector2 start, Vector2 end, GameObject owner) {
+        protected void AddLine (Vector2 start, Vector2 end, GameObject owner, bool bottomLine) {
             
-            LineSegment line = new (start, end,owner , 0xff00ff00, 3);
+            LineSegment line = new (start, end,owner , bottomLine, 0xff00ff00, 3);
             lines.Add (line);
-            LineSegment lineOpp = new (end, start,owner,  0xff00ff00, 3);
+            LineSegment lineOpp = new (end, start,owner, bottomLine,  0xff00ff00, 3);
             lines.Add (lineOpp);
-            Ball endcap = new (end, 0,owner);
+            Ball endcap = new (end, 0,owner, bottomLine);
             caps.Add(endcap);
             
             foreach (LineSegment l in lines)

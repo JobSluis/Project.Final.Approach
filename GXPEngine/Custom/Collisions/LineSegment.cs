@@ -12,6 +12,7 @@ namespace GXPEngine.Components
 
         private uint color = 0xffffffff;
         private uint lineWidth = 1;
+        public bool isBottomLine;
 
         public readonly GameObject owner;
 
@@ -29,8 +30,9 @@ namespace GXPEngine.Components
 			
         }
 		
-        public LineSegment (Vector2 pStart, Vector2 pEnd,GameObject owner , uint pColor = 0xffffffff, uint pLineWidth = 1)
+        public LineSegment (Vector2 pStart, Vector2 pEnd,GameObject owner , bool isBottomLine = false, uint pColor = 0xffffffff, uint pLineWidth = 1)
         {
+            this.isBottomLine = isBottomLine;
             start = pStart;
             end = pEnd;
             color = pColor;

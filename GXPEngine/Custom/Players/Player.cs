@@ -14,7 +14,7 @@ namespace GXPEngine.Custom.Players
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
         private bool isPressingInteract;
-        private bool hasKey = true;
+        private bool hasKey;
         private bool youWin;
 
         //jump variables
@@ -51,8 +51,20 @@ namespace GXPEngine.Custom.Players
             
             if (firstCollision != null)
             {
-                ResolveCollision(firstCollision);
-                isGrounded = true;
+	            ResolveCollision(firstCollision);
+	            switch (firstCollision.other)
+	            {
+		            case LineSegment l:
+		            {
+			            isGrounded = !l.isBottomLine;
+			            break;
+		            }
+		            case Ball b:
+		            {
+			            isGrounded = !b.isBottomLine;
+			            break;
+		            }
+	            }
             } else if (firstCollision == null)
             {
                 isGrounded = false;

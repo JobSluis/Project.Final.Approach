@@ -62,9 +62,9 @@ namespace GXPEngine.Custom.Collisions
 
         private void AddLine (Vector2 start, Vector2 end, GameObject owner) {
             
-            LineSegment line = new (start, end,owner , 0xff00ff00, 3);
+            LineSegment line = new (start, end,owner , false, 0xff00ff00, 3);
             lines.Add (line);
-            LineSegment lineOpp = new (end, start,owner,  0xff00ff00, 3);
+            LineSegment lineOpp = new (end, start,owner,false ,   0xff00ff00, 3);
             lines.Add (lineOpp);
             Ball endcap = new (end, 0,owner);
             caps.Add(endcap);

@@ -24,10 +24,10 @@ namespace GXPEngine.Custom.Collisions
             point2 = new Vector2(x + width, y);
             point3 = new Vector2(x + width, y + height);
             point4 = new Vector2(x , y + height);
-            AddLine(point1,point2, this);
-            AddLine(point2,point3, this);
-            AddLine(point3,point4, this);
-            AddLine(point4,point1, this);
+            AddLine(point1,point2, this , false);
+            AddLine(point2,point3, this, false);
+            AddLine(point3,point4, this, true);
+            AddLine(point4,point1, this, false);
         }
     }
 }
