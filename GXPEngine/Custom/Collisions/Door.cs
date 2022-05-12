@@ -1,4 +1,5 @@
 ﻿using GXPEngine.Core;
+using GXPEngine.Custom.Level_components;
 
 namespace GXPEngine.Custom.Collisions
 {
@@ -7,16 +8,16 @@ namespace GXPEngine.Custom.Collisions
         private Block block;
         private Block block2;
         private Block block3;
-        public Door(Vector2 position)
+        public Door(Vector2 position, GameObject arrayLevel)
         {
             block = new Block(position, "door_tile.png");
             position.y += 64;
             block2 = new Block(position, "door_tile.png");
             position.y += 64;
             block3 = new Block(position, "door_tile.png");
-            Game.main.AddChild(block);
-            Game.main.AddChild(block2);
-            Game.main.AddChild(block3);
+            arrayLevel.AddChild(block);
+            arrayLevel.AddChild(block2);
+            arrayLevel.AddChild(block3);
             MyGame myGame = (MyGame)game;
             myGame.blocks.Add(block);
             myGame.blocks.Add(block2);

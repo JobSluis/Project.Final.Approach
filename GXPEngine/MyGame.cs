@@ -23,6 +23,7 @@ namespace GXPEngine
 		public readonly List<BreakableBlock> breakable;
 		public readonly List<Button> buttons;
 		public readonly List<Heart> hearts;
+		public readonly List<ExitDoor> exitdoors;
 		public int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime;
@@ -34,6 +35,7 @@ namespace GXPEngine
 			breakable = new List<BreakableBlock>();
 			buttons = new List<Button>();
 			hearts = new List<Heart>();
+			exitdoors = new List<ExitDoor>();
 			LoadLevel(0);
 
 			Console.WriteLine("MyGame initialized");
@@ -49,7 +51,10 @@ namespace GXPEngine
 
 		void Update()
 		{
-			//Console.WriteLine(health);
+			if (Input.GetKeyDown(Key.R))
+			{
+				LoadLevel(0);
+			}
 		}
 		
 		private void LoadLevel(int index)
