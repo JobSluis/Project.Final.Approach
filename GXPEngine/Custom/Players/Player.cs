@@ -24,9 +24,11 @@ namespace GXPEngine.Custom
         private const float JUMPSTRENGTHSMALL = 10f;
         private int lastJumpTime;
         private bool isGrounded;
-        
-        //collision variables
-        private Vector2 oldPosition;
+		private bool isPlayerOneTurnedAround = false;
+		private bool isPlayerTwoTurnedAround = false;
+
+		//collision variables
+		private Vector2 oldPosition;
         private CollisionInfo firstCollision;
         private static float BOUNCINESS = 0f;
         private const int MAX_DISTANCE = 250;
@@ -69,17 +71,33 @@ namespace GXPEngine.Custom
                     {
                         Jump();
                         lastJumpTime = Time.time + JUMPINTERVAL;
-                    }
+						SetCycle(13, 4, 5);
+						Animate();
+					}
 
                     if (Input.GetKey(Key.D))
                     {
-                        velocity += new Vector2(1f, 0) * ACCELERATION;
+						if (isPlayerOneTurnedAround)
+                        {
+							width = 128;
+                        }
+						isPlayerOneTurnedAround = false;
+						velocity += new Vector2(1f, 0) * ACCELERATION;
+						SetCycle(4, 10, 5);
+						Animate();
                     }
 
                     if (Input.GetKey(Key.A))
                     {
-                        velocity += new Vector2(-1f, 0) * ACCELERATION;
-                    }
+						if (width > 0)
+						{
+							width = -128;
+						}
+						isPlayerOneTurnedAround = true;
+						velocity += new Vector2(-1f, 0) * ACCELERATION;
+						SetCycle(4, 10, 5);
+						Animate();
+					}
 
                     if (Input.GetKey(Key.E))
                     {
@@ -113,22 +131,63 @@ namespace GXPEngine.Custom
                     
                 case 2 :
 
-                    if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
+					if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
                     {
                         Jump();
                         lastJumpTime = Time.time + JUMPINTERVAL;
-                    }
+						SetCycle(22, 2, 5);
+						Animate();
+					}
 
-                    if (Input.GetKey(Key.RIGHT))
+					if (Input.GetKey(Key.RIGHT) && !Input.GetKey(Key.DOWN))
                     {
-                        velocity += new Vector2(1f, 0) * ACCELERATION;
-                    }
+						if (isPlayerTwoTurnedAround)
+						{
+							width = 128;
+						}
+						isPlayerTwoTurnedAround = false;
+						velocity += new Vector2(1f, 0) * ACCELERATION;
+						SetCycle(3, 10, 5);
+						Animate();
+					}
 
-                    if (Input.GetKey(Key.LEFT))
+					if (Input.GetKey(Key.DOWN) && Input.GetKey(Key.RIGHT))
+					{
+						if (isPlayerTwoTurnedAround)
+						{
+							width = 128;
+						}
+						isPlayerTwoTurnedAround = false;
+						velocity += new Vector2(1f, 0) * ACCELERATION;
+						SetCycle(15, 6, 6);
+						Animate();
+					}
+
+					if (Input.GetKey(Key.LEFT) && !Input.GetKey(Key.DOWN))
                     {
-                        velocity += new Vector2(-1f, 0) * ACCELERATION;
-                    }
-                    if (Input.GetKey(Key.RIGHT_CTRL))
+						if (width > 0)
+						{
+							width = -128;
+						}
+						isPlayerTwoTurnedAround = true;
+						velocity += new Vector2(-1f, 0) * ACCELERATION;
+						SetCycle(3, 10, 5);
+						Animate();
+					}
+
+					if (Input.GetKey(Key.DOWN) && Input.GetKey(Key.LEFT))
+					{
+						if (width > 0)
+						{
+							width = -128;
+						}
+						isPlayerTwoTurnedAround = true;
+						velocity += new Vector2(-1f, 0) * ACCELERATION;
+						SetCycle(15, 6, 6);
+						Animate();
+					}
+
+					if (Input.GetKey(Key.RIGHT_CTRL))
                     {
 	                    foreach (KeyCollectable k in myGame.keys)
 	                    {
@@ -154,7 +213,7 @@ namespace GXPEngine.Custom
 		                    }
 	                    }
                     }
-                        
+
                     break;
             }
             

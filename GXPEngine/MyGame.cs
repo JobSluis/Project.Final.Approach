@@ -26,7 +26,7 @@ namespace GXPEngine
 		public int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime;
-		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
+		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			blocks = new List<Block>();
 			lasers = new List<Laser>();

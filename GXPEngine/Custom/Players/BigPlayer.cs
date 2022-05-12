@@ -5,7 +5,7 @@ namespace GXPEngine.Custom
 {
     public class BigPlayer : Player
     {
-        public BigPlayer(Vector2 position) : base(position, 1, "big_player_idle.png", 1, 1, -1)
+        public BigPlayer(Vector2 position) : base(position, 1, "big_player_sheet.png", 4, 4, 16)
         {
             
         }
