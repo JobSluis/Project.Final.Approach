@@ -1,11 +1,13 @@
 using System.Security.AccessControl;
+using GXPEngine.Core;
 
 namespace GXPEngine.Custom
 {
     public class BigPlayer : Player
     {
-        public BigPlayer() : base(400, 100, 1, "big_player_idle.png", 1, 1, -1)
+        public BigPlayer(Vector2 position) : base(position, 1, "big_player_idle.png", 1, 1, -1)
         {
+            
         }
 
         void Update()

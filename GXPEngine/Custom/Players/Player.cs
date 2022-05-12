@@ -32,10 +32,9 @@ namespace GXPEngine.Custom
         private const int MAX_DISTANCE = 250;
 
 
-        protected Player(int x, int y, int player, string texturePath, int cols, int rows, int frames) : base(texturePath, cols, rows)
+        public Player(Vector2 position, int player, string texturePath, int cols, int rows, int frames) : base(texturePath, cols, rows)
         {
-            position = new Vector2(x, y);
-            SetXY(x, y);
+            SetXY(position);
             playertype = player;
             SetOrigin(width/2,height/2);
             radius = height / 2;

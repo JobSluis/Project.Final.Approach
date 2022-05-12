@@ -34,9 +34,9 @@ namespace GXPEngine
 			display.SetScaleXY(0.5f,0.5f);
 			display.SetXY(0,0);
 			AddChild(display);
-			SmallPlayer player = new();
+			SmallPlayer player = new(new Vector2(200,300));
 			AddChild(player);
-			BigPlayer player2 = new();
+			BigPlayer player2 = new(new Vector2(400,300));
 			AddChild(player2);
 			Chain chain = new (player, player2);
 			AddChild(chain);
@@ -44,7 +44,7 @@ namespace GXPEngine
 			
 
 			//TODO Level loader
-			//StageManager.StageLoader.LoadStage(Stages.Test1);
+			
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
 			keys = new List<KeyCollectable>();

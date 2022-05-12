@@ -7,7 +7,7 @@ namespace GXPEngine.Custom
     public class Button : Sprite
     {
         private GameObject door;
-        public Button(Vector2 position, GameObject door) : base("circle.png")
+        public Button(Vector2 position, GameObject door) : base("button2.png")
         {
             this.door = door;
             SetXY(position);
@@ -22,6 +22,7 @@ namespace GXPEngine.Custom
         {
             Console.WriteLine("pressed");
             door.Destroy();
+            initializeFromTexture(Texture2D.GetInstance("button.png"));
         }
     }
 }

@@ -9,11 +9,11 @@ namespace GXPEngine.Custom.Collisions
         private Block block3;
         public Door(Vector2 position)
         {
-            block = new Block(position, "tile_1.png");
+            block = new Block(position, "door_tile.png");
             position.y += 64;
-            block2 = new Block(position, "tile_1.png");
+            block2 = new Block(position, "door_tile.png");
             position.y += 64;
-            block3 = new Block(position, "tile_1.png");
+            block3 = new Block(position, "door_tile.png");
             Game.main.AddChild(block);
             Game.main.AddChild(block2);
             Game.main.AddChild(block3);

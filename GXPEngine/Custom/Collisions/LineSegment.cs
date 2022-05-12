@@ -43,7 +43,7 @@ namespace GXPEngine.Components
         //------------------------------------------------------------------------------------------------------------------------
         protected override void RenderSelf(GLContext glContext) {
             if (game != null) {
-                Gizmos.RenderLine(start.x, start.y, end.x, end.y, color, lineWidth);
+                //Gizmos.RenderLine(start.x, start.y, end.x, end.y, color, lineWidth);
             }
         }
     }
