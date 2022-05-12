@@ -91,6 +91,14 @@ namespace GXPEngine.Custom
 			                    k.Pickup();
 		                    }
 	                    }
+	                    
+	                    foreach (Heart k in myGame.hearts)
+	                    {
+		                    if (HitTest(k))
+		                    {
+			                    k.PickUp();
+		                    }
+	                    }
 
 	                    foreach (Button b in myGame.buttons)
 	                    {
@@ -137,6 +145,14 @@ namespace GXPEngine.Custom
 			                    b.Press();
 		                    }
 	                    } 
+	                    
+	                    foreach (Heart k in myGame.hearts)
+	                    {
+		                    if (HitTest(k))
+		                    {
+			                    k.PickUp();
+		                    }
+	                    }
                     }
                         
                     break;
