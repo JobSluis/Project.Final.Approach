@@ -27,76 +27,66 @@ namespace GXPEngine
 		private int lastHitTime;
 		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
-			Sprite background = new Sprite("backgroundd.png");
-			background.SetXY(-32,0);
-			AddChild(background);
-			Sprite display = new Sprite("Profile_icon.png");
-			display.SetScaleXY(0.5f,0.5f);
-			display.SetXY(0,0);
-			AddChild(display);
-			SmallPlayer player = new(new Vector2(200,300));
-			AddChild(player);
-			BigPlayer player2 = new(new Vector2(400,300));
-			AddChild(player2);
-			Chain chain = new (player, player2);
-			AddChild(chain);
-			
-			
-
-			//TODO Level loader
-			
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
 			keys = new List<KeyCollectable>();
 			breakable = new List<BreakableBlock>();
 			buttons = new List<Button>();
+			LoadLevel(0);
 
-			
-			for (int i = 0; i < 50;i++)
-			{
-				int rand = Utils.Random(1, 3);
-				string filename = rand switch
-				{
-					1 => "tile_1.png",
-					2 => "tile_2.png",
-					3 => "tile_3.png",
-					_ => "tile_1.png"
-				};
-				Block groundBlock = new (new Vector2(i*64,height - 50), filename);
-				AddChild(groundBlock);
-				blocks.Add(groundBlock);
-			}
-			
-			Spike spike = new(new Vector2(8*64,height - 114));
-			AddChild(spike);
-			blocks.Add(spike);
-			
-			Spike spike2 = new(new Vector2(7*64,height - 114));
-			AddChild(spike2);
-			blocks.Add(spike2);
 
-			Laser laser = new (new Vector2(10*64-64-32 + 6,height - 322 + 16));
-			AddChild(laser);
-			lasers.Add(laser);
 
-			Block block = new(new Vector2(10*64, height - 114 - 64 - 64 - 64 - 64), "tile_1.png");
-			AddChild(block);
-
-			KeyCollectable key = new (new Vector2(5 * 64,height - 114-114));
-			AddChild(key);
-			keys.Add(key);
-
-			Door door = new Door(new Vector2(15* 64, height - 114 - 64 - 64));
-			AddChild(door);
-
-			Button button = new Button(new Vector2(3 * 64, height - 114 - 114),door);
-			AddChild(button);
-			buttons.Add(button);
-
-			BreakableBlock breakBlock = new(new Vector2(6 * 64, height - 114 - 114));
-			AddChild(breakBlock);
-			blocks.Add(breakBlock);
-			breakable.Add(breakBlock);
+			// SmallPlayer player = new(new Vector2(200,300));
+			// AddChild(player);
+			// BigPlayer player2 = new(new Vector2(400,300));
+			// AddChild(player2);
+			// Chain chain = new (player, player2);
+			// AddChild(chain);
+			// for (int i = 0; i < 50;i++)
+			// {
+			// 	int rand = Utils.Random(1, 3);
+			// 	string filename = rand switch
+			// 	{
+			// 		1 => "tile_1.png",
+			// 		2 => "tile_2.png",
+			// 		3 => "tile_3.png",
+			// 		_ => "tile_1.png"
+			// 	};
+			// 	Block groundBlock = new (new Vector2(i*64,height - 50), filename);
+			// 	AddChild(groundBlock);
+			// 	blocks.Add(groundBlock);
+			// }
+			//
+			// Spike spike = new(new Vector2(8*64,height - 114));
+			// AddChild(spike);
+			// blocks.Add(spike);
+			//
+			// Spike spike2 = new(new Vector2(7*64,height - 114));
+			// AddChild(spike2);
+			// blocks.Add(spike2);
+			//
+			// Laser laser = new (new Vector2(10*64-64-32 + 6,height - 322 + 16));
+			// AddChild(laser);
+			// lasers.Add(laser);
+			//
+			// Block block = new(new Vector2(10*64, height - 114 - 64 - 64 - 64 - 64), "tile_1.png");
+			// AddChild(block);
+			//
+			// KeyCollectable key = new (new Vector2(5 * 64,height - 114-114));
+			// AddChild(key);
+			// keys.Add(key);
+			//
+			// Door door = new Door(new Vector2(15* 64, height - 114 - 64 - 64));
+			// AddChild(door);
+			//
+			// Button button = new Button(new Vector2(3 * 64, height - 114 - 114),door);
+			// AddChild(button);
+			// buttons.Add(button);
+			//
+			// BreakableBlock breakBlock = new(new Vector2(6 * 64, height - 114 - 114));
+			// AddChild(breakBlock);
+			// blocks.Add(breakBlock);
+			// breakable.Add(breakBlock);
 			
 			Console.WriteLine("MyGame initialized");
 		}
@@ -112,6 +102,51 @@ namespace GXPEngine
 		void Update()
 		{
 			//Console.WriteLine(health);
+		}
+		
+		private void LoadLevel(int index)
+		{
+			foreach (GameObject g in GetChildren())
+			{
+				g.LateDestroy();
+			}
+			foreach (Block b in blocks)
+			{
+				b.LateDestroy();
+			}
+
+			blocks.Clear();
+
+			foreach (KeyCollectable k in keys)
+			{
+				k.LateDestroy();
+			}
+
+			keys.Clear();
+			
+			foreach (BreakableBlock k in breakable)
+			{
+				k.LateDestroy();
+			}
+
+			breakable.Clear();
+			
+			foreach (Laser k in lasers)
+			{
+				k.LateDestroy();
+			}
+
+			lasers.Clear();
+			
+			foreach (Button k in buttons)
+			{
+				k.LateDestroy();
+			}
+
+			keys.Clear();
+
+			ArrayLevel level = new (index);
+			AddChild(level);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run
