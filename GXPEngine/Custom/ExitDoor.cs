@@ -13,10 +13,5 @@ namespace GXPEngine.Custom
         {
             
         }
-
-        public void ExitLevel()
-        {
-            
-        }
     }
 }

@@ -14,7 +14,8 @@ namespace GXPEngine.Custom.Players
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
         private bool isPressingInteract;
-        private bool hasKey;
+        private bool hasKey = true;
+        private bool youWin;
 
         //jump variables
         private const int JUMPINTERVAL = 1000;
@@ -55,6 +56,13 @@ namespace GXPEngine.Custom.Players
             } else if (firstCollision == null)
             {
                 isGrounded = false;
+            }
+
+            if (youWin)
+            {
+	            MyGame myGame = (MyGame) game;
+	            myGame.Reset();
+	            youWin = false;
             }
         }
 
@@ -105,6 +113,7 @@ namespace GXPEngine.Custom.Players
 		                    if (HitTest(k))
 		                    {
 			                    k.Pickup();
+			                    AudioPlayer.PlayAudio("Sounds/pick_up_key.wav");
 			                    hasKey = true;
 		                    }
 	                    }
@@ -113,8 +122,8 @@ namespace GXPEngine.Custom.Players
 	                    {
 		                    if (HitTest(k) && hasKey)
 		                    {
-			                    k.ExitLevel();
-			                    
+			                    youWin = true;
+
 		                    }
 	                    }
 	                    
@@ -210,7 +219,7 @@ namespace GXPEngine.Custom.Players
 	                    {
 		                    if (HitTest(k) && hasKey)
 		                    {
-			                    k.ExitLevel();
+			                    youWin = true;
 			                    
 		                    }
 	                    }
@@ -436,6 +445,7 @@ namespace GXPEngine.Custom.Players
 				        if (isPressingInteract && playertype == 1)
 				        {
 					        b.Break();
+					        AudioPlayer.PlayAudio("Sounds/breaking_block.wav");
 				        }
 				        break;
 		        }

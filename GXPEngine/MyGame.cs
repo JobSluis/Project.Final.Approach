@@ -40,8 +40,6 @@ namespace GXPEngine
 			exitdoors = new List<ExitDoor>();
 			Sprite startScreen = new Sprite("start_screen.png");
 			AddChild(startScreen);
-			
-			//LoadLevel(0);
 
 			Console.WriteLine("MyGame initialized");
 		}
@@ -92,6 +90,7 @@ namespace GXPEngine
 				healthDisplay.Clear(64, 71, 82);
 				healthDisplay.TextSize(32);
 				healthDisplay.Text(health.ToString());
+				
 				Sprite healthIcon = new Sprite("Heart.png");
 				healthIcon.SetXY(new Vector2(160, 90));
 				AddChild(healthIcon);
@@ -102,8 +101,8 @@ namespace GXPEngine
 				Console.WriteLine(new Vector2(Input.mouseX,Input.mouseY));
 			}
 		}
-		
-		private void LoadLevel(int index)
+
+		public void LoadLevel(int index)
 		{
 			foreach (GameObject g in GetChildren())
 			{
@@ -153,6 +152,11 @@ namespace GXPEngine
 			healthDisplay = new EasyDraw(75,50);
 			healthDisplay.SetXY(225,100);
 			AddChild(healthDisplay);
+		}
+
+		public void Reset()
+		{
+			LoadLevel(0);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run
