@@ -40,6 +40,7 @@ namespace GXPEngine
 			exitdoors = new List<ExitDoor>();
 			Sprite startScreen = new Sprite("start_screen.png");
 			AddChild(startScreen);
+			
 
 			Console.WriteLine("MyGame initialized");
 		}
@@ -80,6 +81,7 @@ namespace GXPEngine
 					if (Input.mouseX is > 608 and < 975 && Input.mouseY is > 665  and < 795)
 					{
 						LoadLevel(0);
+						AudioPlayer.PlayAudio("Sounds/backgroun_music.wav");
 						isPressed = true;
 					}
 				}
