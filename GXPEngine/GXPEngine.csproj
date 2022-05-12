@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom\AudioPlayer.cs" />
     <Compile Include="Custom\Button.cs" />
     <Compile Include="Custom\Chain.cs" />
     <Compile Include="Custom\Collisions\Ball.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Custom\Collisions\Laser.cs" />
     <Compile Include="Custom\Collisions\LineSegment.cs" />
     <Compile Include="Custom\Collisions\Spike.cs" />
+    <Compile Include="Custom\ExitDoor.cs" />
     <Compile Include="Custom\Heart.cs" />
     <Compile Include="Custom\KeyCollectable.cs" />
     <Compile Include="Custom\Level components\Arraylevel.cs" />

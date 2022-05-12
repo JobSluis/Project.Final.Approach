@@ -23,10 +23,13 @@ namespace GXPEngine
 		public readonly List<BreakableBlock> breakable;
 		public readonly List<Button> buttons;
 		public readonly List<Heart> hearts;
+		public readonly List<ExitDoor> exitdoors;
+		private EasyDraw healthDisplay;
 		public int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime;
-		private MyGame() : base(1600, 900, true)		// Create a window that's 800x600 and NOT fullscreen
+		private bool isPressed;
+		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			blocks = new List<Block>();
 			lasers = new List<Laser>();
@@ -34,22 +37,70 @@ namespace GXPEngine
 			breakable = new List<BreakableBlock>();
 			buttons = new List<Button>();
 			hearts = new List<Heart>();
-			LoadLevel(0);
+			exitdoors = new List<ExitDoor>();
+			Sprite startScreen = new Sprite("start_screen.png");
+			AddChild(startScreen);
+			
+			//LoadLevel(0);
 
 			Console.WriteLine("MyGame initialized");
 		}
 		
-		public void LoseLife() 
+		public void LoseLife(GameObject causer) 
 		{ 
 			if (Time.time <= lastHitTime) return; 
-			health--; 
+			health--;
+			if (causer is Spike)
+			{
+				AudioPlayer.PlayAudio("Sounds/spike.wav");
+			}
+			if (health <= 0)
+			{
+				Death();
+			}
 			lastHitTime = Time.time + INVINCIBILITYTIME; 
-		} 
-		
+		}
+
+		private void Death()
+		{
+			AudioPlayer.PlayAudio("Sounds/Death.wav");
+			health = 3;
+			LoadLevel(0);
+		}
 
 		void Update()
 		{
-			//Console.WriteLine(health);
+			if (Input.GetKeyDown(Key.R))
+			{
+				LoadLevel(0);
+			}
+
+			if (!isPressed)
+			{
+				if (Input.GetMouseButtonDown(0))
+				{
+					if (Input.mouseX is > 608 and < 975 && Input.mouseY is > 665  and < 795)
+					{
+						LoadLevel(0);
+						isPressed = true;
+					}
+				}
+			}
+
+			if (isPressed)
+			{
+				healthDisplay.Clear(64, 71, 82);
+				healthDisplay.TextSize(32);
+				healthDisplay.Text(health.ToString());
+				Sprite healthIcon = new Sprite("Heart.png");
+				healthIcon.SetXY(new Vector2(160, 90));
+				AddChild(healthIcon);
+			}
+
+			if (Input.GetMouseButtonDown(0))
+			{
+				Console.WriteLine(new Vector2(Input.mouseX,Input.mouseY));
+			}
 		}
 		
 		private void LoadLevel(int index)
@@ -95,6 +146,13 @@ namespace GXPEngine
 
 			ArrayLevel level = new (index);
 			AddChild(level);
+			Sprite display = new Sprite("Profile_icon.png");
+			display.SetScaleXY(0.5f,0.5f);
+			display.SetXY(0,0);
+			AddChild(display);
+			healthDisplay = new EasyDraw(75,50);
+			healthDisplay.SetXY(225,100);
+			AddChild(healthDisplay);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run

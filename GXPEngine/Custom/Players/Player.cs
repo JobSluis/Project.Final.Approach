@@ -1,11 +1,8 @@
-using System;
-using System.Drawing.Drawing2D;
-using System.Security.AccessControl;
 using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom.Collisions;
 
-namespace GXPEngine.Custom
+namespace GXPEngine.Custom.Players
 {   //TODO Crouching, animating and potentially fixing the movement if possible
     public class Player : AnimationSprite
     {
@@ -17,11 +14,12 @@ namespace GXPEngine.Custom
         private static float GRAVITY = 0.4f;
         private readonly int playertype;
         private bool isPressingInteract;
+        private bool hasKey;
 
         //jump variables
         private const int JUMPINTERVAL = 1000;
         private const float JUMPSTRENGTH = 15f;
-        private const float JUMPSTRENGTHSMALL = 10f;
+        private const float JUMPSTRENGTHSMALL = 20f;
         private int lastJumpTime;
         private bool isGrounded;
 		private bool isPlayerOneTurnedAround = false;
@@ -44,7 +42,7 @@ namespace GXPEngine.Custom
         
         protected void Update()
         {
-            UpdateScreenPosition();
+	        UpdateScreenPosition();
             oldPosition = position;
             Controls();
             position += velocity;
@@ -107,6 +105,16 @@ namespace GXPEngine.Custom
 		                    if (HitTest(k))
 		                    {
 			                    k.Pickup();
+			                    hasKey = true;
+		                    }
+	                    }
+	                    
+	                    foreach (ExitDoor k in myGame.exitdoors)
+	                    {
+		                    if (HitTest(k) && hasKey)
+		                    {
+			                    k.ExitLevel();
+			                    
 		                    }
 	                    }
 	                    
@@ -194,8 +202,20 @@ namespace GXPEngine.Custom
 		                    if (HitTest(k))
 		                    {
 			                    k.Pickup();
+			                    hasKey = true;
 		                    }
-	                    }     
+	                    }
+	                    
+	                    foreach (ExitDoor k in myGame.exitdoors)
+	                    {
+		                    if (HitTest(k) && hasKey)
+		                    {
+			                    k.ExitLevel();
+			                    
+		                    }
+	                    }
+
+	                    
 	                    
 	                    foreach (Button b in myGame.buttons)
 	                    {
@@ -255,7 +275,7 @@ namespace GXPEngine.Custom
         private void Jump()
         {
             isGrounded = false;
-            if (playertype == 1)
+            if (playertype != 1)
             {
 	            velocity.y -= JUMPSTRENGTHSMALL;
             }
@@ -406,8 +426,11 @@ namespace GXPEngine.Custom
 		        if (col.other is not LineSegment l) return;
 		        switch (l.owner)
 		        {
-			        case Spike or Laser:
-				        myGame.LoseLife();
+			        case Spike :
+				        myGame.LoseLife(l.owner);
+				        break; 
+			        case Laser :
+				        myGame.LoseLife(l.owner);
 				        break;
 			        case BreakableBlock b:
 				        if (isPressingInteract && playertype == 1)

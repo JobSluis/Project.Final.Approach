@@ -40,15 +40,22 @@ namespace GXPEngine.Custom.Collisions
             if (Time.time > lastShootTime)
             {
                 frameNumber = frameNumber == 6 ? 1 : 6;
+                AudioPlayer.PlayAudio("Sounds/Laser.wav");
                 lastShootTime = Time.time + SHOOTINTERVAL;
             }
             //TODO animate the laser correctly
-            isActive = frameNumber switch
+            switch (frameNumber)
             {
-                1 => false,
-                6 => true,
-                _ => isActive
-            };
+                case 1:
+                    isActive = false;
+                    break;
+                case 6:
+                    isActive = true;
+                    break;
+                default:
+                    isActive = isActive;
+                    break;
+            }
 
             SetCycle(frameNumber);
         }
