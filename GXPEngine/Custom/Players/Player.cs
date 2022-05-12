@@ -1,12 +1,8 @@
-using System;
-using System.Drawing.Drawing2D;
-using System.Security.AccessControl;
 using GXPEngine.Components;
 using GXPEngine.Core;
 using GXPEngine.Custom.Collisions;
-using GXPEngine.Custom.Level_components;
 
-namespace GXPEngine.Custom
+namespace GXPEngine.Custom.Players
 {   //TODO Crouching, animating and potentially fixing the movement if possible
     public class Player : AnimationSprite
     {
@@ -371,8 +367,11 @@ namespace GXPEngine.Custom
 		        if (col.other is not LineSegment l) return;
 		        switch (l.owner)
 		        {
-			        case Spike or Laser:
-				        myGame.LoseLife();
+			        case Spike :
+				        myGame.LoseLife(l.owner);
+				        break; 
+			        case Laser :
+				        myGame.LoseLife(l.owner);
 				        break;
 			        case BreakableBlock b:
 				        if (isPressingInteract && playertype == 1)

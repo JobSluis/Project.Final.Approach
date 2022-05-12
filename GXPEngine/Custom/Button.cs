@@ -22,6 +22,7 @@ namespace GXPEngine.Custom
         {
             Console.WriteLine("pressed");
             door.Destroy();
+            AudioPlayer.PlayAudio("Sounds/Door_opens.wav");
             initializeFromTexture(Texture2D.GetInstance("button.png"));
         }
     }

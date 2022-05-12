@@ -1,4 +1,5 @@
 using GXPEngine.Core;
+using GXPEngine.Custom.Players;
 
 namespace GXPEngine.Custom
 {

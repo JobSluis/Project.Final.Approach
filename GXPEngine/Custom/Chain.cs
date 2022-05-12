@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using GXPEngine.Core;
+using GXPEngine.Custom.Players;
 
 namespace GXPEngine.Custom
 {
