@@ -30,10 +30,10 @@ namespace GXPEngine.Custom
             point2 = new Vector2(x + width, y);
             point3 = new Vector2(x + width, y + height);
             point4 = new Vector2(x , y + height);
-            AddLine(point1,point2, this, false);
-            AddLine(point2,point3, this, false);
-            AddLine(point3,point4, this, true);  //special action
-            AddLine(point4,point1, this, true);
+            // AddLine(point1,point2, this, false);
+            // AddLine(point2,point3, this, false);
+            // AddLine(point3,point4, this, true);  //special action
+            // AddLine(point4,point1, this, true);
         }
 
         void Update()
