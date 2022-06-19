@@ -9,10 +9,9 @@ namespace GXPEngine.Custom.Players
     {
         public Vector2 position;
         public Vector2 velocity;
-        private readonly float radius;
-        private const float BRAKINGFORCE = 0.1f;
-        private const float ACCELERATION = 1f;
-        private static float GRAVITY = 10f;
+        private const float BRAKINGFORCE = 0.15f;
+        private const float ACCELERATION = 0.2f;
+        private static float GRAVITY = 0.3f;
         private readonly int playertype;
         private bool isPressingInteract;
         private bool hasKey;
@@ -20,8 +19,8 @@ namespace GXPEngine.Custom.Players
 
         //jump variables
         private const int JUMPINTERVAL = 1000;
-        private const float JUMPSTRENGTH = 500f;
-        private const float JUMPSTRENGTHSMALL = 200f;
+        private const float JUMPSTRENGTH = 20f;
+        private const float JUMPSTRENGTHSMALL = 25f;
         private int lastJumpTime;
         private bool isGrounded;
 		private bool isPlayerOneTurnedAround = false;
@@ -40,7 +39,6 @@ namespace GXPEngine.Custom.Players
             SetXY(position);
             playertype = player;
             SetOrigin(width/2,height/2);
-            radius = height / 2;
         }
         
         protected void Update()
@@ -51,13 +49,29 @@ namespace GXPEngine.Custom.Players
 	        if (horizontalCollision != null)
 	        {
 		        velocity.x = 0;
-		        Console.WriteLine("horizontal");
+		        //Console.WriteLine("horizontal");
+		        if (horizontalCollision.self is Spike)
+		        {
+			        MyGame myGame = (MyGame) game;
+			        myGame.LoseLife(horizontalCollision.self);
+			        Console.WriteLine("lose life bitch");
+		        }
 	        }
 	        if (verticalCollision != null)
 	        {
 		        isGrounded = true;
 		        velocity.y = 0;
-		        Console.WriteLine("vertical");
+		        //Console.WriteLine("vertical");
+		        if (verticalCollision.self is Spike)
+		        {
+			        MyGame myGame = (MyGame) game;
+			        myGame.LoseLife(verticalCollision.self);
+			        Console.WriteLine("lose life bitch");
+		        }
+	        }
+	        else
+	        {
+		        velocity.y += GRAVITY;
 	        }
 	        //UpdateScreenPosition();
             // oldPosition = position;

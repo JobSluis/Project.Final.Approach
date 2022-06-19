@@ -6,6 +6,7 @@ namespace GXPEngine.Custom
     {
         public KeyCollectable(Vector2 position) : base("key.png")
         {
+            collider.isTrigger = true;
             SetXY(position);
         }
 

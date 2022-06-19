@@ -38,7 +38,7 @@ namespace GXPEngine
 			buttons = new List<Button>();
 			hearts = new List<Heart>();
 			exitdoors = new List<ExitDoor>();
-			Sprite startScreen = new Sprite("start_screen.png");
+			Sprite startScreen = new Sprite("start_screen.png",false,false);
 			AddChild(startScreen);
 			
 
@@ -93,7 +93,7 @@ namespace GXPEngine
 				healthDisplay.TextSize(32);
 				healthDisplay.Text(health.ToString());
 				
-				Sprite healthIcon = new Sprite("Heart.png");
+				Sprite healthIcon = new Sprite("Heart.png",false,false);
 				healthIcon.SetXY(new Vector2(160, 90));
 				AddChild(healthIcon);
 			}
@@ -147,11 +147,11 @@ namespace GXPEngine
 
 			ArrayLevel level = new (index);
 			AddChild(level);
-			Sprite display = new Sprite("Profile_icon.png");
+			Sprite display = new Sprite("Profile_icon.png",false,false);
 			display.SetScaleXY(0.5f,0.5f);
 			display.SetXY(0,0);
 			AddChild(display);
-			healthDisplay = new EasyDraw(75,50);
+			healthDisplay = new EasyDraw(75,50,false);
 			healthDisplay.SetXY(225,100);
 			AddChild(healthDisplay);
 		}

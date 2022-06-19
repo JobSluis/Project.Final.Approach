@@ -32,8 +32,8 @@ namespace GXPEngine.Custom.Level_components
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
-				{0,0,0,0,0,0,8,8,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,6,},
-				{0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,},
+				{0,0,0,3,3,0,8,8,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,6,},
+				{0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,},
 				{3,0,0,0,1,0,0,2,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,11,3,},
 				{3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,3,},
@@ -44,7 +44,7 @@ namespace GXPEngine.Custom.Level_components
 		
 		public ArrayLevel(int index)
 		{
-			Sprite background = new Sprite("backgroundd.png");
+			Sprite background = new Sprite("backgroundd.png",false,false);
 			background.SetXY(-32,0);
 			AddChild(background);
 			MyGame myGame = (MyGame)game;
@@ -147,6 +147,7 @@ namespace GXPEngine.Custom.Level_components
 			if (big != null || small != null)
 			{
 				Chain chain = new Chain(big, small);
+				Console.WriteLine("chain added");
 				AddChild(chain);
 			}
 

@@ -9,6 +9,7 @@ namespace GXPEngine.Custom
         public GameObject door;
         public Button(Vector2 position, GameObject door) : base("button2.png")
         {
+            collider.isTrigger = true;
             this.door = door;
             SetXY(position);
         }
