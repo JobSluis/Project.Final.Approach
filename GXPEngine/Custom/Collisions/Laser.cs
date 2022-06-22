@@ -9,7 +9,7 @@ namespace GXPEngine.Custom.Collisions
     {
         private int lastShootTime;
         private const int SHOOTINTERVAL = 1000;
-        private int frameNumber = 1;
+        private int frameNumber = 0;
         private List<Ball> caps;
         private List<LineSegment> lines;
         private Vector2 point1;
@@ -56,7 +56,7 @@ namespace GXPEngine.Custom.Collisions
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     break;
                 case 11:
-                    frameNumber = 1;
+                    frameNumber = 0;
                     break;
             }
 
