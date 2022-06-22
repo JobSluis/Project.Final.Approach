@@ -52,7 +52,7 @@ namespace GXPEngine.Custom.Collisions
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     isActive = true;
                     break;
-                case 8:
+                case 7:
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     break;
                 case 11:
