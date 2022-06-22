@@ -8,7 +8,7 @@ namespace GXPEngine.Custom.Collisions
     public class Laser : AnimationSprite
     {
         private int lastShootTime;
-        private const int SHOOTINTERVAL = 1000;
+        private const int SHOOTINTERVAL = 750;
         private int frameNumber = 0;
         private List<Ball> caps;
         private List<LineSegment> lines;
@@ -45,12 +45,14 @@ namespace GXPEngine.Custom.Collisions
             //TODO animate the laser correctly
             switch (frameNumber)
             {
-                case 1:
+                case 0:
                     isActive = false;
+                    break;
+                case 4:
+                    isActive = true;
                     break;
                 case 5:
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
-                    isActive = true;
                     break;
                 case 7:
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
