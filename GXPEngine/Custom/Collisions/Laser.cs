@@ -57,7 +57,7 @@ namespace GXPEngine.Custom.Collisions
                 case 7:
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     break;
-                case 11:
+                case 10:
                     frameNumber = 0;
                     break;
             }

@@ -186,7 +186,12 @@ namespace GXPEngine.Custom.Players
 	                    } 
                     }
 
-                    break;
+					if (!Input.AnyKey() && isGrounded)
+					{
+						SetFrame(0);
+					}
+
+					break;
                     
                 case 2 :
 
@@ -285,7 +290,12 @@ namespace GXPEngine.Custom.Players
 	                    }
                     }
 
-                    break;
+					if (!Input.AnyKey() && isGrounded)
+					{
+						SetFrame(0);
+					}
+
+					break;
             }
             
             if (velocity.x > 0)
