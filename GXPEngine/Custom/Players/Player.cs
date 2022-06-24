@@ -233,7 +233,7 @@ namespace GXPEngine.Custom.Players
                     {
 						if (width > 0)
 						{
-							width = -128;
+							_mirrorX = true;
 						}
 						isPlayerTwoTurnedAround = true;
 						velocity -= new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
@@ -245,7 +245,7 @@ namespace GXPEngine.Custom.Players
 					{
 						if (width > 0)
 						{
-							width = -128;
+							_mirrorX = true;
 						}
 						isPlayerTwoTurnedAround = true;
 						velocity += new Vector2(-1f, 0) * ACCELERATION * Time.deltaTime;

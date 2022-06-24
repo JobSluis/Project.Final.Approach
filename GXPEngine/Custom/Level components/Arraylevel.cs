@@ -48,6 +48,18 @@ namespace GXPEngine.Custom.Level_components
 			background.SetXY(-32,0);
 			AddChild(background);
 			MyGame myGame = (MyGame)game;
+			EasyDraw border = new EasyDraw(1, myGame.height);
+			border.SetXY(-1,-1);
+			EasyDraw border2 = new EasyDraw(myGame.width, 1);
+			border2.SetXY(-1,-1);
+			EasyDraw border3 = new EasyDraw(myGame.width, 1);
+			border3.SetXY(-1,myGame.height + 1);
+			EasyDraw border4 = new EasyDraw(1, myGame.height);
+			border4.SetXY(myGame.width + 1,-1);
+			AddChild(border);
+			AddChild(border2);
+			AddChild(border3);
+			AddChild(border4);
 			const int tileSize = 64;
 			for (int rows = 0; rows < levels.GetLength(1); rows++)
 			{
