@@ -9,9 +9,9 @@ namespace GXPEngine.Custom
     {
         private readonly Player player1;
         private readonly Player player2;
-        private const float MAX_CHAIN_LENGTH = 350;
+        private const float MAX_CHAIN_LENGTH = 400;
         private const float ULTIMATE_MAX_CHAIN_LENGTH = 500;
-        private const float CHAINSTRENGTH = 7f;
+        private const float CHAINSTRENGTH = 1f;
         private float chainLength;
         private uint lineColor;
         
@@ -24,18 +24,18 @@ namespace GXPEngine.Custom
 
         private void Update()
         {
-            chainLength = (player1.position - player2.position).Length();
+            chainLength = (new Vector2(player1.x,player1.y) - new Vector2(player2.x,player2.y)).Length();
             ColorCheck();
-            Gizmos.DrawLine(player1.position.x, player1.position.y,player2.position.x,player2.position.y,null,lineColor);
+            Gizmos.DrawLine(player1.x, player1.y,player2.x,player2.y,null,lineColor);
             LengthCheck();
         }
 
         private void LengthCheck()
         {
-            Vector2 positionDelta = player1.position - player2.position;
+            Vector2 positionDelta = new Vector2(player1.x,player1.y) - new Vector2(player2.x,player2.y);
             
             if (chainLength < MAX_CHAIN_LENGTH) return;
-            player2.velocity += positionDelta.Normalized() * CHAINSTRENGTH;
+            player2.velocity += positionDelta.Normalized() * CHAINSTRENGTH * Time.deltaTime;
             // if (chainLength > ULTIMATE_MAX_CHAIN_LENGTH)
             // {
             //     player1.velocity += positionDelta.Normalized() * CHAINSTRENGTH;

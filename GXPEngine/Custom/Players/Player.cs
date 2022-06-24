@@ -10,8 +10,8 @@ namespace GXPEngine.Custom.Players
         public Vector2 position;
         public Vector2 velocity;
         private const float BRAKINGFORCE = 0.15f;
-        private const float ACCELERATION = 0.2f;
-        private static float GRAVITY = 0.3f;
+        private const float ACCELERATION = 0.02f;
+        private static float GRAVITY = 0.03f;
         private readonly int playertype;
         private bool isPressingInteract;
         private bool hasKey;
@@ -36,76 +36,78 @@ namespace GXPEngine.Custom.Players
 
         public Player(Vector2 position, int player, string texturePath, int cols, int rows, int frames) : base(texturePath, cols, rows)
         {
-            SetXY(position);
+	        collider.isTrigger = true;
+	        SetXY(position);
             playertype = player;
             SetOrigin(width/2,height/2);
         }
         
         protected void Update()
         {
+	        Gizmos.DrawLine(x,y,x + width,y, null, 0xffffffff);
+	        Gizmos.DrawLine(x,y,x,y + height, null, 0xffffffff);
+	        Gizmos.DrawLine(x + width,y,x + width,y + height, null, 0xffffffff);
+	        Gizmos.DrawLine(x + width,y + height,x,y + height, null, 0xffffffff);
 	        Controls();
+	        CollisionChecks();
+	        CheckWinCon();
+        }
+
+        private void CheckWinCon()
+        {
+	        if (youWin)
+	        {
+		        MyGame myGame = (MyGame) game;
+		        myGame.Reset();
+		        youWin = false;
+	        }
+        }
+
+        private void CollisionChecks()
+        {
 	        horizontalCollision = MoveUntilCollision(velocity.x, 0);
 	        verticalCollision = MoveUntilCollision(0, velocity.y);
 	        if (horizontalCollision != null)
 	        {
+		        MyGame myGame = (MyGame)game;
 		        velocity.x = 0;
-		        //Console.WriteLine("horizontal");
-		        if (horizontalCollision.self is Spike)
+		        switch (horizontalCollision.other)
 		        {
-			        MyGame myGame = (MyGame) game;
-			        myGame.LoseLife(horizontalCollision.self);
-			        Console.WriteLine("lose life bitch");
+			        case Spike:
+				        myGame.LoseLife(horizontalCollision.other);
+				        Console.WriteLine("lose life bitch");
+				        break;
+			        case Laser:
+				        myGame.LoseLife(horizontalCollision.other);
+				        break;
+		        }
+
+		        if (playertype == 1)
+		        {
+			        if (horizontalCollision.other is BreakableBlock b && isPressingInteract)
+			        {
+				        b.Break();
+			        }
 		        }
 	        }
 	        if (verticalCollision != null)
 	        {
 		        isGrounded = true;
 		        velocity.y = 0;
-		        //Console.WriteLine("vertical");
-		        if (verticalCollision.self is Spike)
+		        MyGame myGame = (MyGame) game;
+		        switch (verticalCollision.other)
 		        {
-			        MyGame myGame = (MyGame) game;
-			        myGame.LoseLife(verticalCollision.self);
-			        Console.WriteLine("lose life bitch");
+			        //Console.WriteLine("vertical");
+			        case Spike:
+			        case Laser:
+				        myGame.LoseLife(verticalCollision.other);
+				        break;
 		        }
 	        }
 	        else
 	        {
-		        velocity.y += GRAVITY;
+		        velocity.y += GRAVITY * Time.deltaTime;
 	        }
-	        //UpdateScreenPosition();
-            // oldPosition = position;
-            // Controls();
-            // position += velocity;
-            //firstCollision = FindEarliestCollision();
-            
-            // if (firstCollision != null)
-            // {
-	           //  //ResolveCollision(firstCollision);
-	           //  switch (firstCollision.other)
-	           //  {
-		          //   case LineSegment l:
-		          //   {
-			         //    isGrounded = !l.isBottomLine;
-			         //    break;
-		          //   }
-		          //   case Ball b:
-		          //   {
-			         //    isGrounded = !b.isBottomLine;
-			         //    break;
-		          //   }
-	           //  }
-            // } else if (firstCollision == null)
-            // {
-            //     isGrounded = false;
-            // }
-
-            if (youWin)
-            {
-	            MyGame myGame = (MyGame) game;
-	            myGame.Reset();
-	            youWin = false;
-            }
         }
 
         private void Controls()
@@ -126,11 +128,11 @@ namespace GXPEngine.Custom.Players
                     if (Input.GetKey(Key.D))
                     {
 						if (isPlayerOneTurnedAround)
-                        {
-							width = 128;
-                        }
+						{
+							_mirrorX = false;
+						}
 						isPlayerOneTurnedAround = false;
-						velocity += new Vector2(1f, 0) * ACCELERATION;
+						velocity += new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(4, 10, 5);
 						Animate();
                     }
@@ -139,10 +141,10 @@ namespace GXPEngine.Custom.Players
                     {
 						if (width > 0)
 						{
-							width = -128;
+							_mirrorX = true;
 						}
 						isPlayerOneTurnedAround = true;
-						velocity -= new Vector2(1f, 0) * ACCELERATION;
+						velocity -= new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(4, 10, 5);
 						Animate();
 					}
@@ -183,7 +185,7 @@ namespace GXPEngine.Custom.Players
 		                    {
 			                    b.Press();
 		                    }
-	                    } 
+	                    }
                     }
 
 					if (!Input.AnyKey() && isGrounded)
@@ -198,7 +200,7 @@ namespace GXPEngine.Custom.Players
 					if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
                     {
                         Jump();
-                        lastJumpTime = Time.time + JUMPINTERVAL;
+                        lastJumpTime = Time.time + JUMPINTERVAL * Time.deltaTime;
 						SetCycle(22, 2, 5);
 						Animate();
 					}
@@ -207,10 +209,10 @@ namespace GXPEngine.Custom.Players
                     {
 						if (isPlayerTwoTurnedAround)
 						{
-							width = 128;
+							_mirrorX = false;
 						}
 						isPlayerTwoTurnedAround = false;
-						velocity += new Vector2(1f, 0) * ACCELERATION;
+						velocity += new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(3, 10, 5);
 						Animate();
 					}
@@ -219,10 +221,10 @@ namespace GXPEngine.Custom.Players
 					{
 						if (isPlayerTwoTurnedAround)
 						{
-							width = 128;
+							_mirrorX = true;
 						}
 						isPlayerTwoTurnedAround = false;
-						velocity += new Vector2(1f, 0) * ACCELERATION;
+						velocity += new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(15, 6, 6);
 						Animate();
 					}
@@ -234,7 +236,7 @@ namespace GXPEngine.Custom.Players
 							width = -128;
 						}
 						isPlayerTwoTurnedAround = true;
-						velocity -= new Vector2(1f, 0) * ACCELERATION;
+						velocity -= new Vector2(1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(3, 10, 5);
 						Animate();
 					}
@@ -246,7 +248,7 @@ namespace GXPEngine.Custom.Players
 							width = -128;
 						}
 						isPlayerTwoTurnedAround = true;
-						velocity += new Vector2(-1f, 0) * ACCELERATION;
+						velocity += new Vector2(-1f, 0) * ACCELERATION * Time.deltaTime;
 						SetCycle(15, 6, 6);
 						Animate();
 					}
@@ -316,19 +318,10 @@ namespace GXPEngine.Custom.Players
                 velocity.x += BRAKINGFORCE;
             }
             
-            
-            // if (velocity.y < 0)
-            // {
-            //     velocity.y += GRAVITY;
-            // }
             if (!isGrounded)
             {
 	            velocity.y += GRAVITY;
             }
-            // if (isGrounded)
-            // {
-            //     velocity.y -= GRAVITY;
-            // }
         }
 
         private void Jump()
@@ -343,168 +336,5 @@ namespace GXPEngine.Custom.Players
 	            velocity.y -= JUMPSTRENGTH;
             }
         }
-
-        //private CollisionInfo FindEarliestCollision()
-	    //{
-        //MyGame myGame = (MyGame)game;
-		// 	CollisionInfo lowestToi = null;
-        //
-		// foreach (Block t in myGame.blocks)  //caps collision
-		// {
-		// 	for (int i = 0; i < t.GetNumberOfCaps(); i++)
-		// 	{
-		// 		Ball mover = t.GetCaps(i);
-		// 		// if (mover == this) continue;
-		// 		//special check for performance reasons, seeing how far they are away from the ball before calculating
-		// 		if(mover.position.x < position.x - MAX_DISTANCE || mover.position.y < position.y - MAX_DISTANCE ||
-		// 		   mover.position.x > position.x + MAX_DISTANCE || mover.position.y > position.y + MAX_DISTANCE) continue;
-		// 			
-		// 		CollisionInfo ballcheck = Ballcheck(mover);
-		// 		if (ballcheck == null) continue;
-		// 		if (lowestToi == null || lowestToi.timeOfImpact > ballcheck.timeOfImpact)
-		// 		{
-		// 			lowestToi = ballcheck;
-		// 		}
-		// 		
-		// 	}
-  //
-		// 	for (int i = 0; i < t.GetNumberOfLines(); i++) //line collisions
-		// 	{
-		// 		LineSegment l = t.GetLine(i);
-		// 		Block g = (Block) l.owner;
-		// 		//special check for performance reasons, seeing how far they are away from the ball before calculating
-		// 		if (g.position.x < position.x - MAX_DISTANCE || g.position.x > position.x + MAX_DISTANCE ||		
-		// 		    g.position.y < position.y - MAX_DISTANCE || g.position.y > position.y + MAX_DISTANCE) continue;
-		// 		Vector2 diffVec = position - l.end;
-		// 		Vector2 lineVec = l.end - l.start;
-		// 		float ballDistance = lineVec.Normal().Dot(diffVec);
-		// 		if (!(ballDistance < radius)) continue;
-		// 		Vector2 oldDiffVec = oldPosition - l.end;
-		// 		float a = lineVec.Normal().Dot(oldDiffVec) - radius;
-		// 		float b = -lineVec.Normal().Dot(velocity);
-		// 		if (!(a >= 0) || !(b > 0)) continue;
-		// 		float toi = a / b;
-		// 		Vector2 poi = oldPosition + velocity * toi;
-		// 		Vector2 diffVec2 = l.end - poi;
-		// 		Vector2 unitVec = lineVec.Normalized();
-		// 		float distance = diffVec2.Dot(unitVec);
-		// 		if (!(toi <= 1)) continue;
-		// 		if (!(distance >= 0) || !(distance < lineVec.Length())) continue;
-		// 		CollisionInfo lineCheck = new CollisionInfo(lineVec.Normal(), l, toi);
-		// 		if (lowestToi == null || lowestToi.timeOfImpact > lineCheck.timeOfImpact)
-		// 		{
-		// 			lowestToi = lineCheck;
-		// 		}
-		// 	}
-		// }
-		// foreach (Laser t in myGame.lasers)  //caps collision
-		// {
-		// 	if (!t.isActive) continue;
-		// 	for (int i = 0; i < t.GetNumberOfCaps(); i++)
-		// 	{
-		// 		Ball mover = t.GetCaps(i);
-		// 		// if (mover == this) continue;
-		// 		//special check for performance reasons, seeing how far they are away from the ball before calculating
-		// 		if(mover.position.x < position.x - MAX_DISTANCE || mover.position.y < position.y - MAX_DISTANCE ||
-		// 		   mover.position.x > position.x + MAX_DISTANCE || mover.position.y > position.y + MAX_DISTANCE) continue;
-		// 			
-		// 		CollisionInfo ballcheck = Ballcheck(mover);
-		// 		if (ballcheck == null) continue;
-		// 		if (lowestToi == null || lowestToi.timeOfImpact > ballcheck.timeOfImpact)
-		// 		{
-		// 			lowestToi = ballcheck;
-		// 		}
-		// 		
-		// 	}
-  //
-		// 	for (int i = 0; i < t.GetNumberOfLines(); i++) //line collisions
-		// 	{
-		// 		LineSegment l = t.GetLine(i);
-		// 		Laser g = (Laser) l.owner;
-		// 		//special check for performance reasons, seeing how far they are away from the ball before calculating
-		// 		if (g.x < position.x - MAX_DISTANCE || g.x > position.x + MAX_DISTANCE ||		
-		// 		    g.y < position.y - MAX_DISTANCE || g.y > position.y + MAX_DISTANCE) continue;
-		// 		Vector2 diffVec = position - l.end;
-		// 		Vector2 lineVec = l.end - l.start;
-		// 		float ballDistance = lineVec.Normal().Dot(diffVec);
-		// 		if (!(ballDistance < radius)) continue;
-		// 		Vector2 oldDiffVec = oldPosition - l.end;
-		// 		float a = lineVec.Normal().Dot(oldDiffVec) - radius;
-		// 		float b = -lineVec.Normal().Dot(velocity);
-		// 		if (!(a >= 0) || !(b > 0)) continue;
-		// 		float toi = a / b;
-		// 		Vector2 poi = oldPosition + velocity * toi;
-		// 		Vector2 diffVec2 = l.end - poi;
-		// 		Vector2 unitVec = lineVec.Normalized();
-		// 		float distance = diffVec2.Dot(unitVec);
-		// 		if (!(toi <= 1)) continue;
-		// 		if (!(distance >= 0) || !(distance < lineVec.Length())) continue;
-		// 		CollisionInfo lineCheck = new CollisionInfo(lineVec.Normal(), l, toi);
-		// 		if (lowestToi == null || lowestToi.timeOfImpact > lineCheck.timeOfImpact)
-		// 		{
-		// 			lowestToi = lineCheck;
-		// 		}
-		// 	}
-		// }
-		// return lowestToi;
-		//
-  //       }
-  //       
-  //       private CollisionInfo Ballcheck(Ball mover)
-  //       {
-	 //        Vector2 correctNormal = oldPosition - mover.position;
-	 //        float a = Mathf.Pow(velocity.Length(),2);
-	 //        if (a == 0) return null;
-	 //        float b = (2 * correctNormal).Dot(velocity);
-	 //        float c = Mathf.Pow(correctNormal.Length(),2) - Mathf.Pow(radius + mover.radius,2);
-	 //        float d = Mathf.Pow(b, 2) - (4 * a * c);
-	 //        float toi;
-	 //        if (d < 0) return null;
-	 //        if (c < 0)
-	 //        {
-		//         if (b < 0 || (a > -radius && a < 0))
-		//         {
-		// 	        toi = 0;
-		//         }
-		//         else return null;
-	 //        }
-	 //        else
-	 //        {
-		//         toi = (-b - Mathf.Sqrt(d))/ (2 * a);
-	 //        }
-  //
-  //
-	 //        return toi is < 0 or > 1 ? null : new CollisionInfo(correctNormal.Normalized(), mover, toi);
-  //       }
-  //       private void ResolveCollision(CollisionInfo col) {
-		//         Vector2 poi = oldPosition + velocity * col.timeOfImpact;
-		//         position = poi;
-		//         velocity.Reflect(1,col.normal);
-		//         velocity *= BOUNCINESS;
-		//         MyGame myGame = (MyGame)game;
-		//         if (col.other is not LineSegment l) return;
-		//         switch (l.owner)
-		//         {
-		// 	        case Spike :
-		// 		        myGame.LoseLife(l.owner);
-		// 		        break; 
-		// 	        case Laser :
-		// 		        myGame.LoseLife(l.owner);
-		// 		        break;
-		// 	        case BreakableBlock b:
-		// 		        if (isPressingInteract && playertype == 1)
-		// 		        {
-		// 			        b.Break();
-		// 			        AudioPlayer.PlayAudio("Sounds/breaking_block.wav");
-		// 		        }
-		// 		        break;
-		//         }
-  //       }
-  //
-  //       private void UpdateScreenPosition()
-  //       {
-  //           x = position.x;
-  //           y = position.y;
-  //       }
     }
 }
