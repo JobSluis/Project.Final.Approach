@@ -11,6 +11,7 @@ namespace GXPEngine.Custom.Collisions
         private const int SHOOTINTERVAL = 750;
         private int frameNumber = 0;
         public bool isActive;
+
         public Laser(Vector2 position) : base("Laser_sprite_sheet1.png", 2, 5, 10)
         {
             width /= 4;
@@ -20,7 +21,6 @@ namespace GXPEngine.Custom.Collisions
 
         void Update()
         {
-            
             if (Time.time > lastShootTime)
             {
                 frameNumber++;
@@ -30,10 +30,10 @@ namespace GXPEngine.Custom.Collisions
             switch (frameNumber)
             {
                 case 0:
-                    isActive = false;
+                    collider.isTrigger = true;
                     break;
                 case 4:
-                    isActive = true;
+                    collider.isTrigger = false;
                     break;
                 case 5:
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
