@@ -29,7 +29,7 @@ namespace GXPEngine.Custom.Level_components
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,4,},
-				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,},
+				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 				{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 				{0,0,0,3,3,0,8,8,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,6,},
@@ -131,7 +131,7 @@ namespace GXPEngine.Custom.Level_components
 							break;
 
 						case LASER:
-							Laser laser = new Laser(new Vector2(position.x - 90, position.y));
+							Laser laser = new Laser(new Vector2(position.x - 61, position.y));
 
 							AddChild(laser);
 							myGame.lasers.Add(laser);
