@@ -71,7 +71,7 @@ namespace GXPEngine
 		{
 			if (Input.GetKeyDown(Key.R))
 			{
-				LoadLevel(0);
+				LoadLevel(2);
 			}
 
 			if (!isPressed)
