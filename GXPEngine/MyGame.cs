@@ -165,9 +165,9 @@ namespace GXPEngine
 			AddChild(healthDisplay);
 		}
 
-		public void Reset()
+		public void NextScene()
 		{
-			LoadLevel(0);
+			LoadLevel(currentScene + 1);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run

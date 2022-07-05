@@ -54,7 +54,7 @@ namespace GXPEngine.Custom.Players
 	        if (youWin)
 	        {
 		        MyGame myGame = (MyGame) game;
-		        myGame.Reset();
+		        myGame.NextScene();
 		        youWin = false;
 	        }
         }
