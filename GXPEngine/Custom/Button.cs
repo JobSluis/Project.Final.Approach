@@ -8,6 +8,7 @@ namespace GXPEngine.Custom
     {
         public GameObject door;
         public int index;
+        private bool triggeredOnce;
         public Button(Vector2 position, GameObject door, int index = 0) : base("button2.png")
         {
             this.index = index;
@@ -25,7 +26,11 @@ namespace GXPEngine.Custom
         {
             Console.WriteLine("pressed");
             door.Destroy();
-            AudioPlayer.PlayAudio("Sounds/Door_opens.wav");
+            if (!triggeredOnce)
+            {
+                AudioPlayer.PlayAudio("Sounds/Door_opens.wav");
+                triggeredOnce = true;
+            }
             initializeFromTexture(Texture2D.GetInstance("button.png"));
         }
     }

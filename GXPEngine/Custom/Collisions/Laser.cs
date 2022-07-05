@@ -36,9 +36,11 @@ namespace GXPEngine.Custom.Collisions
                     collider.isTrigger = false;
                     break;
                 case 5:
+                    AudioPlayer.volume = 0.1f;
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     break;
                 case 7:
+                    AudioPlayer.volume = 0.1f;
                     AudioPlayer.PlayAudio("Sounds/Laser.wav");
                     break;
                 case 10:
