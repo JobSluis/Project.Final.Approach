@@ -14,7 +14,7 @@ namespace GXPEngine.Custom.Players
         private static float GRAVITY = 0.05f;
         private readonly int playertype;
         private bool isPressingInteract;
-        private bool hasKey;
+        private bool hasKey = true;
         private bool youWin;
 
         //jump variables
@@ -71,7 +71,6 @@ namespace GXPEngine.Custom.Players
 		        {
 			        case Spike:
 				        myGame.LoseLife(horizontalCollision.other);
-				        Console.WriteLine("lose life bitch");
 				        break;
 			        case Laser:
 				        myGame.LoseLife(horizontalCollision.other);

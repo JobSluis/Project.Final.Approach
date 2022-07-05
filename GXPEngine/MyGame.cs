@@ -74,7 +74,7 @@ namespace GXPEngine
 		{
 			if (Input.GetKeyDown(Key.R))
 			{
-				LoadLevel(1);
+				LoadLevel(2);
 			}
 
 			if (!isPressed)
@@ -168,6 +168,22 @@ namespace GXPEngine
 		public void NextScene()
 		{
 			LoadLevel(currentScene + 1);
+			if (currentScene >= 3)
+			{
+				EndScreen();
+			}
+		}
+
+		private void EndScreen()
+		{
+			EasyDraw endScreen = new EasyDraw(width,height,false);
+			endScreen.Fill(0);
+			endScreen.Rect(0,0,width * 2,height * 2);
+			endScreen.Fill(255);
+			endScreen.TextSize(64);
+			endScreen.alpha = 0.6f;
+			endScreen.Text("You Escaped",width/2 - 280,height/2);
+			AddChild(endScreen);
 		}
 
 		static void Main()							// Main() is the first method that's called when the program is run
