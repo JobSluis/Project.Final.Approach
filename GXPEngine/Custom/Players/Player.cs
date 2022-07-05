@@ -273,8 +273,6 @@ namespace GXPEngine.Custom.Players
 		                    }
 	                    }
 
-	                    
-	                    
 	                    foreach (Button b in myGame.buttons)
 	                    {
 		                    if (HitTest(b))

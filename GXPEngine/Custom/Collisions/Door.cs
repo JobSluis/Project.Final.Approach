@@ -8,8 +8,10 @@ namespace GXPEngine.Custom.Collisions
         private Block block;
         private Block block2;
         private Block block3;
-        public Door(Vector2 position, GameObject arrayLevel)
+        public int index;
+        public Door(Vector2 position, GameObject arrayLevel, int index = 0)
         {
+            this.index = index;
             block = new Block(position, "door_tile.png");
             position.y += 64;
             block2 = new Block(position, "door_tile.png");

@@ -24,11 +24,13 @@ namespace GXPEngine
 		public readonly List<Button> buttons;
 		public readonly List<Heart> hearts;
 		public readonly List<ExitDoor> exitdoors;
+		public readonly List<Door> doors;
 		private EasyDraw healthDisplay;
 		public int health = 4;
 		private const int INVINCIBILITYTIME = 1000; 
 		private int lastHitTime;
 		private bool isPressed;
+		private int currentScene;
 		private MyGame() : base(1600, 900, false)		// Create a window that's 800x600 and NOT fullscreen
 		{
 			blocks = new List<Block>();
@@ -38,6 +40,7 @@ namespace GXPEngine
 			buttons = new List<Button>();
 			hearts = new List<Heart>();
 			exitdoors = new List<ExitDoor>();
+			doors = new List<Door>();
 			Sprite startScreen = new Sprite("start_screen.png",false,false);
 			AddChild(startScreen);
 			
@@ -64,14 +67,14 @@ namespace GXPEngine
 		{
 			AudioPlayer.PlayAudio("Sounds/Death.wav");
 			health = 3;
-			LoadLevel(0);
+			LoadLevel(currentScene);
 		}
 
 		void Update()
 		{
 			if (Input.GetKeyDown(Key.R))
 			{
-				LoadLevel(2);
+				LoadLevel(1);
 			}
 
 			if (!isPressed)
@@ -143,8 +146,14 @@ namespace GXPEngine
 				k.LateDestroy();
 			}
 
-			keys.Clear();
+			foreach (ExitDoor d in exitdoors)
+			{
+				d.LateDestroy();
+			}
+			exitdoors.Clear();
 
+			keys.Clear();
+			currentScene = index;
 			ArrayLevel level = new (index);
 			AddChild(level);
 			Sprite display = new Sprite("Profile_icon.png",false,false);
