@@ -183,7 +183,7 @@ namespace GXPEngine.Custom.Level_components
 							break;
 						
 						case EXITDOOR:
-							ExitDoor exit = new ExitDoor(position);
+							ExitDoor exit = new ExitDoor(new Vector2(position.x - 32,position.y + 16));
 							
 							AddChild(exit);
 							myGame.exitdoors.Add(exit);

@@ -11,7 +11,7 @@ namespace GXPEngine.Custom
         private readonly Player player2;
         private const float MAX_CHAIN_LENGTH = 400;
         private const float ULTIMATE_MAX_CHAIN_LENGTH = 500;
-        private const float CHAINSTRENGTH = 1f;
+        private const float CHAINSTRENGTH = 0.5f;
         private float chainLength;
         private uint lineColor;
         

@@ -11,7 +11,7 @@ namespace GXPEngine.Custom.Players
         public Vector2 velocity;
         private const float BRAKINGFORCE = 0.15f;
         private const float ACCELERATION = 0.02f;
-        private static float GRAVITY = 0.03f;
+        private static float GRAVITY = 0.05f;
         private readonly int playertype;
         private bool isPressingInteract;
         private bool hasKey;
@@ -44,10 +44,6 @@ namespace GXPEngine.Custom.Players
         
         protected void Update()
         {
-	        Gizmos.DrawLine(x,y,x + width,y, null, 0xffffffff);
-	        Gizmos.DrawLine(x,y,x,y + height, null, 0xffffffff);
-	        Gizmos.DrawLine(x + width,y,x + width,y + height, null, 0xffffffff);
-	        Gizmos.DrawLine(x + width,y + height,x,y + height, null, 0xffffffff);
 	        Controls();
 	        CollisionChecks();
 	        CheckWinCon();
@@ -187,6 +183,10 @@ namespace GXPEngine.Custom.Players
 		                    }
 	                    }
                     }
+                    else
+                    {
+	                    isPressingInteract = false;
+                    }
 
 					if (!Input.AnyKey() && isGrounded)
 					{
@@ -200,7 +200,7 @@ namespace GXPEngine.Custom.Players
 					if (Input.GetKey(Key.UP) && Time.time > lastJumpTime)
                     {
                         Jump();
-                        lastJumpTime = Time.time + JUMPINTERVAL * Time.deltaTime;
+                        lastJumpTime = Time.time + JUMPINTERVAL;
 						SetCycle(22, 2, 5);
 						Animate();
 					}
